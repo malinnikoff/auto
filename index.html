@@ -1087,7 +1087,7 @@ var CONFIG = {
     ok = cMark("c_consent", !document.getElementById("cf_consent").checked) && ok;
     if (!ok) { var first = cForm.querySelector(".invalid"); if (first) first.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
     var err = document.getElementById("cSendError"); err.hidden = true;
-    var tag = function (where) { return function (e) { if (e && e.where) throw e; var x = new Error(where + (e && (e.name || e.message) ? ": " + (e.name && e.name !== "Error" ? e.name : e.message) : "")); x.where = where; throw x; }; };
+    var tag = function (where) { return function (e) { if (e && e.where) throw e; var x = new Error(where + (e ? ": " + [e.name !== "Error" ? e.name : "", e.message].filter(Boolean).join(" ").slice(0, 120) : "")); x.where = where; throw x; }; };
     var showErr = function (e) {
       var code = (e && e.message) || "unknown";
       document.getElementById("cErrCode").textContent = "Код ошибки: " + code;
