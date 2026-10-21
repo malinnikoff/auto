@@ -178,13 +178,13 @@ function handleContract_(d) {
     lock.releaseLock();
   }
 
-  var text = '<b>ДОГОВОР НА ПРОВЕРКУ</b> · #' + l.id + '\n' +
-    esc_(l.stage) + ' · файлов: ' + l.fileCount + '\n' +
-    esc_(l.name) + ' · ' + esc_(l.phone) + ' · прислать в: ' + esc_(l.contact) + '\n' +
-    'Источник: ' + esc_(l.utm_source || 'прямой заход');
+  var text = '📄 <b>ДОГОВОР НА ПРОВЕРКУ</b> · #' + l.id + ' · ' + Utilities.formatDate(l.created, Session.getScriptTimeZone(), 'dd.MM HH:mm') + '\n' +
+    '👤 ' + esc_(l.name) + ' · ' + esc_(phoneText_(l.phone)) + ' · прислать разбор: ' + esc_(l.contact) + '\n' +
+    (l.stage === 'Да, уже подписал(а)' ? 'Договор уже подписан' : 'Не подписан, это предложение дилера') + ' · файлов: ' + l.fileCount + '\n' +
+    'Откуда: ' + esc_(sourceText_(l));
   var digits = l.phone.replace(/\D/g, '');
   try {
-    sendTelegram_(text, [[{ text: 'Открыть файлы', url: l.folder }, { text: 'WhatsApp', url: 'https://wa.me/' + digits }]]);
+    sendTelegram_(text, [[{ text: 'Открыть файлы', url: l.folder }, { text: 'WhatsApp', url: 'https://wa.me/' + digits }], [{ text: 'Таблица', url: sheetLink_(contractSheet_()) }]]);
   } catch (err) { console.error('Telegram: ' + err); }
   try {
     var to = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL');
@@ -289,27 +289,67 @@ function setupSheet_(sh) {
 
 /* ================= Уведомления ================= */
 
+var SCORE_ICON = { 'Горячая': '🔥', 'Тёплая': '🟡', 'Холодная': '⚪' };
+
+// +13055550100 → +1 305 555 0100 (так номер легче прочитать)
+function phoneText_(p) {
+  var m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(p || '');
+  return m ? '+1 ' + m[1] + ' ' + m[2] + ' ' + m[3] : String(p || '');
+}
+
+// Откуда пришёл человек, простыми словами
+function sourceText_(l) {
+  var src = (l.utm_source || '').toLowerCase(), med = (l.utm_medium || '').toLowerCase(), cnt = l.utm_content || '';
+  var t;
+  if (src === 'instagram' && med === 'bio') t = 'Instagram, шапка профиля';
+  else if (src === 'instagram' && med === 'reels') t = 'Instagram, рилс';
+  else if (src === 'instagram') t = 'Instagram' + (med ? ', ' + med : '');
+  else if (src === 'dogovor') t = 'ответ на слово «договор»';
+  else if (src === 'test') t = 'тест';
+  else if (src) t = l.utm_source + (med ? ', ' + l.utm_medium : '');
+  else if (l.referrer) t = 'переход с ' + l.referrer.replace(/^https?:\/\//, '').split('/')[0];
+  else t = 'открыл сайт напрямую';
+  return t + (cnt ? ' (' + cnt + ')' : '');
+}
+
+function dealText_(l) {
+  if (l.deal === 'Лизинг') return 'лизинг';
+  if (l.deal === 'Пока не решил(а)') return 'покупка или лизинг, пока не решил(а)';
+  if (l.pay === 'Кредит') return 'покупка в кредит';
+  if (l.pay === 'Наличные') return 'покупка за наличные';
+  return 'покупка, способ оплаты пока не выбран';
+}
+
+function whenText_(w) {
+  return { '7 дней': 'в течение 7 дней', '30 дней': 'в течение 30 дней', '1–3 месяца': 'через 1–3 месяца', 'Позже': 'позже, не в ближайшие 3 месяца' }[w] || w;
+}
+
 function leadText_(l, html) {
-  var esc = function (v) { return html ? String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : String(v); };
+  var esc = function (v) { return html ? esc_(v) : String(v); };
   var b = function (v) { return html ? '<b>' + esc(v) + '</b>' : String(v); };
   var tz = Session.getScriptTimeZone();
+  var car = [l.make, l.model].filter(String).join(' ') + (l.year && l.year !== 'Не важно' ? ' ' + l.year : '');
   var lines = [
-    b(l.score.toUpperCase()) + ' · Заявка #' + l.id + ' · ' + Utilities.formatDate(l.created, tz, 'dd.MM HH:mm'),
-    b(esc([l.make, l.model].filter(String).join(' ') + (l.year && l.year !== 'Не важно' ? ' ' + l.year : ''))) + ' · ' + esc(l.deal) + (l.pay ? ' (' + esc(l.pay) + ')' : ''),
-    'Бюджет: ' + esc(l.budget) + ' (' + esc(l.budgetType.toLowerCase()) + ')',
-    'Trade-in: ' + esc(l.tradein) + ' · Покупка: ' + esc(l.when),
-    esc(l.state) + (l.zip ? ' · ZIP ' + esc(l.zip) : ''),
-    esc(l.name) + ' · ' + esc(l.phone) + ' · удобно: ' + esc(l.contact),
-    'Источник: ' + esc(l.utm_source || (l.referrer ? l.referrer.replace(/^https?:\/\//, '').split('/')[0] : 'прямой заход'))
+    (SCORE_ICON[l.score] || '') + ' ' + b(l.score.toUpperCase()) + ' · #' + l.id + ' · ' + Utilities.formatDate(l.created, tz, 'dd.MM HH:mm'),
+    '👤 ' + esc(l.name) + ' · ' + esc(phoneText_(l.phone)) + ' · связь: ' + esc(l.contact.toLowerCase() === 'звонок' ? 'звонок' : l.contact),
+    '🚗 ' + b(car || 'Машина не указана') + ' · ' + esc(dealText_(l)),
+    '💵 ' + esc(l.budgetType) + ': ' + esc(l.budget) + ' · ' + (l.tradein === 'Да' ? 'есть машина на обмен' : 'без обмена'),
+    '📅 Хочет купить: ' + esc(whenText_(l.when)),
+    '📍 ' + esc(l.state) + (l.zip ? ', ZIP ' + esc(l.zip) : ''),
+    'Откуда: ' + esc(sourceText_(l))
   ];
   return lines.join('\n');
+}
+
+function sheetLink_(sh) {
+  return SpreadsheetApp.getActiveSpreadsheet().getUrl() + '#gid=' + sh.getSheetId();
 }
 
 function notifyTelegram_(l) {
   var digits = l.phone.replace(/\D/g, '');
   sendTelegram_(leadText_(l, true), [[
     { text: 'WhatsApp', url: 'https://wa.me/' + digits },
-    { text: 'Таблица', url: SpreadsheetApp.getActiveSpreadsheet().getUrl() }
+    { text: 'Таблица', url: sheetLink_(sheet_()) }
   ]]);
 }
 
