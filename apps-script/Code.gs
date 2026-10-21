@@ -69,6 +69,12 @@ function doPost(e) {
 
     if (data.type === 'contract') return handleContract_(data);
 
+    // Отчёт сайта о сбое отправки договора (без личных данных): виден в «Выполнениях» скрипта.
+    if (data.type === 'clientError') {
+      console.warn('Сбой на сайте: ' + String(data.where).slice(0, 200) + ' | ' + String(data.ua).slice(0, 200) + ' | ' + JSON.stringify(data.files || []).slice(0, 300));
+      return json_({ ok: true });
+    }
+
     var lead = clean_(data);
     var problem = check_(lead);
     if (problem) return json_({ ok: false, error: problem });

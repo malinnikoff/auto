@@ -234,6 +234,7 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .alert{background:var(--error-bg);color:var(--error);border-radius:12px;padding:14px;font-size:14.5px;margin-top:16px;display:grid;gap:10px}
 .alert a{font-weight:600}
+.alert .err-code{font-size:12px;opacity:.7}
 
 /* contract check */
 .hero-alt{text-align:center;margin-top:10px;font-size:14px}
@@ -729,7 +730,7 @@ footer a{color:var(--muted)}
         </div>
         <div class="hp" aria-hidden="true"><label>Не заполняйте <input type="text" id="cf_website" tabindex="-1" autocomplete="off"></label></div>
 
-        <div class="alert" id="cSendError" role="alert" hidden><span>Не удалось отправить файлы. Проверьте интернет и попробуйте ещё раз.</span><span id="cFallback"></span></div>
+        <div class="alert" id="cSendError" role="alert" hidden><span>Не удалось отправить файлы. Проверьте интернет и попробуйте ещё раз.</span><span id="cFallback"></span><small id="cErrCode" class="err-code"></small></div>
         <div class="nav"><button type="submit" class="btn" id="cSubmit">Отправить на проверку</button></div>
         <p class="micro">Разбор бесплатный и ни к чему не обязывает. Он носит информационный характер и не является юридической консультацией.</p>
       </form>
@@ -1018,14 +1019,37 @@ var CONFIG = {
   var cPhone = document.getElementById("cf_phone");
   cPhone.addEventListener("input", function () { formatPhone(cPhone); });
   // Фото с телефона весят 3–5 МБ: перед отправкой уменьшаем до 2000 px по длинной стороне (текст договора остаётся читаемым).
+  // Сначала createImageBitmap, если телефон не справился, то через обычную картинку <img>.
+  function decodeImage(file) {
+    var viaImg = function () {
+      return new Promise(function (res, rej) {
+        var url = URL.createObjectURL(file), img = new Image();
+        img.onload = function () { res({ src: img, w: img.naturalWidth, h: img.naturalHeight, done: function () { URL.revokeObjectURL(url); } }); };
+        img.onerror = function () { URL.revokeObjectURL(url); rej(new Error("decode")); };
+        img.src = url;
+      });
+    };
+    if (!window.createImageBitmap) return viaImg();
+    return createImageBitmap(file).then(function (b) { return { src: b, w: b.width, h: b.height, done: function () { if (b.close) b.close(); } }; }, viaImg);
+  }
   function compressImage(file) {
-    if (!/^image\//.test(file.type) || !window.createImageBitmap) return Promise.resolve(null);
-    return createImageBitmap(file).then(function (bmp) {
-      var k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+    if (!/^image\//.test(file.type)) return Promise.resolve(null);
+    return decodeImage(file).then(function (im) {
+      var k = Math.min(1, 2000 / Math.max(im.w, im.h));
       var c = document.createElement("canvas");
-      c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
-      c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
-      return new Promise(function (res) { c.toBlob(function (b) { res(b); }, "image/jpeg", 0.82); });
+      c.width = Math.round(im.w * k); c.height = Math.round(im.h * k);
+      c.getContext("2d").drawImage(im.src, 0, 0, c.width, c.height);
+      im.done();
+      return new Promise(function (res) {
+        if (c.toBlob) c.toBlob(function (b) { res(b); }, "image/jpeg", 0.82);
+        else res(null);
+      }).then(function (b) {
+        if (b) return b;
+        // запасной путь для старых телефонов
+        var bin = atob(c.toDataURL("image/jpeg", 0.82).split(",")[1]), arr = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        return new Blob([arr], { type: "image/jpeg" });
+      });
     }).then(function (blob) {
       if (!blob || blob.size >= file.size) return null;
       return new Promise(function (res) {
@@ -1063,40 +1087,51 @@ var CONFIG = {
     ok = cMark("c_consent", !document.getElementById("cf_consent").checked) && ok;
     if (!ok) { var first = cForm.querySelector(".invalid"); if (first) first.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
     var err = document.getElementById("cSendError"); err.hidden = true;
-    var showErr = function () {
+    var tag = function (where) { return function (e) { if (e && e.where) throw e; var x = new Error(where + (e && (e.name || e.message) ? ": " + (e.name && e.name !== "Error" ? e.name : e.message) : "")); x.where = where; throw x; }; };
+    var showErr = function (e) {
+      var code = (e && e.message) || "unknown";
+      document.getElementById("cErrCode").textContent = "Код ошибки: " + code;
+      // Короткий отчёт об ошибке без личных данных, чтобы увидеть причину в журнале скрипта.
+      try {
+        fetch(CONFIG.ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ type: "clientError", where: code, ua: navigator.userAgent,
+            files: files.map(function (f) { return (f.type || "?") + " " + Math.round(f.size / 1024) + "KB"; }) }) }).catch(function () {});
+      } catch (x) {}
       document.getElementById("cFallback").innerHTML = CONFIG.WHATSAPP
         ? 'Или пришлите договор мне в WhatsApp: <a target="_blank" rel="noopener" href="https://wa.me/' + CONFIG.WHATSAPP + '">открыть WhatsApp</a>'
         : 'Или пришлите договор мне в Instagram: <a target="_blank" rel="noopener" href="https://ig.me/m/' + CONFIG.INSTAGRAM + '">@' + CONFIG.INSTAGRAM + "</a>";
       err.hidden = false; err.scrollIntoView({ block: "center", behavior: "smooth" });
     };
-    if (!CONFIG.ENDPOINT) { showErr(); return; }
+    if (!CONFIG.ENDPOINT) { showErr(new Error("no endpoint")); return; }
     var btn = document.getElementById("cSubmit");
     cSending = true; btn.disabled = true; btn.textContent = "Отправляю…";
-    Promise.all(files.map(readFile)).then(function (enc) {
+    var post = function (body) {
+      var once = function () { return fetch(CONFIG.ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body }); };
+      // при обрыве связи пробуем ещё раз через 2 секунды
+      return once().catch(function () { return new Promise(function (r) { setTimeout(r, 2000); }).then(once); });
+    };
+    Promise.all(files.map(function (f) { return readFile(f).catch(tag("read")); })).then(function (enc) {
       var bytes = enc.reduce(function (a, f) { return a + f.data.length * 0.75; }, 0);
       if (bytes > MAX_BYTES) {
         cMark("c_files", true, "Файлы слишком большие даже после сжатия. Отправьте PDF поменьше или меньше страниц");
         document.getElementById("c_files").scrollIntoView({ block: "center", behavior: "smooth" });
         throw new Error("size");
       }
-      return fetch(CONFIG.ENDPOINT, {
-        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({
+      return post(JSON.stringify({
           type: "contract", files: enc, stage: cVal("stage"),
           name: document.getElementById("cf_name").value.trim(), phone: phoneDigitsOf(cPhone), contact: cVal("ccontact"),
           consent: true,
           website: document.getElementById("cf_website").value,
           utm_source: src.utm_source, utm_medium: src.utm_medium, utm_campaign: src.utm_campaign, utm_content: src.utm_content,
           referrer: src.referrer, page: location.href.split("#")[0]
-        })
-      });
-    }).then(function (r) { return r.json(); }).then(function (res) {
-      if (!res || !res.ok || !res.id) throw new Error("bad");
+        })).catch(tag("net"));
+    }).then(function (r) { return r.json().catch(tag("resp " + r.status)); }).then(function (res) {
+      if (!res || !res.ok || !res.id) { var x = new Error("server " + ((res && res.error) || "")); x.where = "server"; throw x; }
       track("contract_submit", { lead_id: res.id });
       document.getElementById("cLeadId").textContent = "#" + res.id;
       cForm.hidden = true; var d = document.getElementById("cDone"); d.hidden = false;
       d.scrollIntoView({ block: "center", behavior: "smooth" }); d.focus({ preventScroll: true });
-    }).catch(function (e) { if (!e || e.message !== "size") showErr(); }).then(function () {
+    }).catch(function (e) { if (!e || e.message !== "size") showErr(e); }).then(function () {
       cSending = false; btn.disabled = false; if (!cForm.hidden) btn.textContent = "Отправить на проверку";
     });
   });
