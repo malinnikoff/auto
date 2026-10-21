@@ -310,7 +310,9 @@ function sourceText_(l) {
   if (src === 'instagram' && med === 'bio') t = 'Instagram, шапка профиля';
   else if (src === 'instagram' && med === 'reels') t = 'Instagram, рилс';
   else if (src === 'instagram') t = 'Instagram' + (med ? ', ' + med : '');
+  else if (src === 'dogovor' && med === 'bio') t = 'Instagram, ссылка «проверить договор» в шапке';
   else if (src === 'dogovor') t = 'ответ на слово «договор»';
+  else if (src === 'cena') t = 'ответ на слово «цена»';
   else if (src === 'test') t = 'тест';
   else if (src) t = l.utm_source + (med ? ', ' + l.utm_medium : '');
   else if (l.referrer) t = 'переход с ' + l.referrer.replace(/^https?:\/\//, '').split('/')[0];
