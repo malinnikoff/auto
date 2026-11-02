@@ -18,8 +18,6 @@
         --accent: #c2410c;
         --accent-ink: #ffffff;
         --accent-soft: #fdf0e9;
-        --wa: #128c4a;
-        --tg: #229ED9;
         --danger: #b3261e;
         --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px -12px rgba(16, 24, 40, .18);
       }
@@ -35,8 +33,6 @@
           --accent: #f06423;
           --accent-ink: #ffffff;
           --accent-soft: #332016;
-          --wa: #1faa59;
-          --tg: #229ED9;
           --danger: #e5736b;
           --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
         }
@@ -208,16 +204,11 @@
       .btn-primary { background: var(--accent); color: var(--accent-ink); flex: 1 1 auto; }
       .btn-primary:active { filter: brightness(.92); }
       .btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
-      .btn-wa { background: var(--wa); color: #fff; }
-      .btn-tg { background: var(--tg); color: #fff; flex: 1 1 auto; }
-      .btn-tg:active { filter: brightness(.92); }
       .btn-block { width: 100%; }
-      .send-hint { margin: 12px 2px 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
 
       .btn-send { background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 58px; font-size: 18px; }
       .btn-send:disabled { opacity: .6; cursor: default; }
       .btn-send:active { filter: brightness(.92); }
-      .messenger-cap { margin: 14px 2px 10px; font-size: 14.5px; color: var(--ink-3); text-align: center; }
       .send-error { margin: 10px 2px 0; font-size: 15.5px; line-height: 1.45; color: var(--danger); }
       .photo-soft { margin: 10px 2px 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
       .send-success {
@@ -248,8 +239,6 @@
       .photo-count { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-3); }
 
       body.client-mode .bar .row { flex-direction: column; }
-      body.client-mode #waDirectBtn { width: 100%; min-height: 58px; font-size: 18px; }
-      body.client-mode #tgDirectBtn { width: 100%; min-height: 58px; font-size: 18px; }
       body.client-mode #clearBtn { min-height: 44px; padding: 10px 14px; font-size: 15.5px; font-weight: 600; }
 
       .panel {
@@ -470,16 +459,12 @@
 
       <div class="bar" id="sendBar">
         <button type="button" class="btn-send" id="sendBtn">Отправить заявку</button>
-        <p class="send-error" id="sendError" hidden>Не получилось отправить. Попробуйте ещё раз - или отправьте заявку через WhatsApp или Telegram кнопками ниже.</p>
+        <p class="send-error" id="sendError" hidden>Не получилось отправить. Проверьте интернет и попробуйте ещё раз.</p>
         <p class="photo-soft" id="photoSoft" hidden>Вы выбрали трейд-ин, но не прикрепили фото. Заявку можно отправить и без них - но с фото мы оценим ваш автомобиль точнее.</p>
-        <p class="messenger-cap" id="messengerCap">или отправьте через мессенджер</p>
         <div class="row">
           <button type="button" class="btn-primary" id="buildBtn">Сформировать заявку</button>
-          <a class="btn btn-wa" id="waDirectBtn" href="#" target="_blank" rel="noopener" hidden>Отправить в WhatsApp</a>
-          <button type="button" class="btn-tg" id="tgDirectBtn">Отправить в Telegram</button>
           <button type="button" class="btn-ghost" id="clearBtn">Очистить форму</button>
         </div>
-        <p class="send-hint">Если отправите через Telegram - ваш ник мы увидим сразу из чата, вписывать его в форму не обязательно</p>
       </div>
 
       <div class="send-success" id="sendSuccess" hidden>
@@ -492,8 +477,6 @@
         <textarea id="resultText" readonly></textarea>
         <div class="row">
           <button type="button" class="btn-primary" id="copyBtn">Скопировать заявку</button>
-          <a class="btn btn-wa" id="waBtn" href="#" target="_blank" rel="noopener">Отправить в WhatsApp</a>
-          <button type="button" class="btn-tg" id="tgBtn">Отправить в Telegram</button>
         </div>
       </section>
 
@@ -510,18 +493,12 @@
       (function () {
         var DRAFT_KEY = "zayavka-draft-v1";
         var HISTORY_KEY = "zayavka-history-v1";
-        var WA_NUMBER = "19544772740";
 
         var form = document.getElementById("form");
         var creditBlock = document.getElementById("creditBlock");
         var tradeBlock = document.getElementById("tradeBlock");
         var resultPanel = document.getElementById("resultPanel");
         var resultText = document.getElementById("resultText");
-        var waBtn = document.getElementById("waBtn");
-        var waDirectBtn = document.getElementById("waDirectBtn");
-        var tgDirectBtn = document.getElementById("tgDirectBtn");
-        var tgBtn = document.getElementById("tgBtn");
-        var TG_URL = "https://t.me/dmtriy_miami";
         var toast = document.getElementById("toast");
         var RECEIVER_URL = "https://script.google.com/macros/s/AKfycbw1EFt_OfvsK_SObPlHlllWAy41W2kClOfg0XR5jOq-QBbyG050awcfL4AG2WMQ0Edy/exec";
         var MAX_PHOTOS = 10;
@@ -544,8 +521,6 @@
           if (proTitle) proTitle.textContent = "Заявка на авто";
           var proSub = document.getElementById("subText");
           if (proSub) proSub.textContent = "Заполните по клиенту - заявка соберётся сама";
-          var capEl = document.getElementById("messengerCap");
-          if (capEl) capEl.hidden = true;
         }
 
         if (!isPro) {
@@ -568,7 +543,6 @@
           if (clientTitle) clientTitle.textContent = "О вас";
           var buildEl = document.getElementById("buildBtn");
           if (buildEl) buildEl.hidden = true;
-          if (waDirectBtn) waDirectBtn.hidden = false;
         }
 
         var TEXT_FIELDS = ["f_name","f_phone","f_tg","f_car","f_year","f_trim","f_color","f_interior","f_score","f_down",
@@ -911,7 +885,6 @@
           var text = buildText(s);
           resultText.value = text;
           resultPanel.hidden = false;
-          waBtn.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text);
           if (isPro) {
             var carLine = [s.f_car, s.f_year].filter(Boolean).join(", ");
             var arr = loadHistory();
@@ -926,63 +899,6 @@
           resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
           showToast("Заявка сформирована");
         });
-
-        waBtn.addEventListener("click", function (e) {
-          var s = readState();
-          if (!s.tg_none && !s.f_tg) {
-            e.preventDefault();
-            showToast("Укажите ник в Telegram или отметьте «У меня нет Telegram»");
-            var tgInput = document.getElementById("f_tg");
-            tgInput.scrollIntoView({ behavior: "smooth", block: "center" });
-            setTimeout(function () { tgInput.focus(); }, 350);
-          }
-        });
-
-        if (waDirectBtn) {
-          waDirectBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            var s = readState();
-            if (!s.f_name && !s.f_car) {
-              showToast("Заполните хотя бы ваше имя и машину");
-              var nameInput = document.getElementById("f_name");
-              nameInput.scrollIntoView({ behavior: "smooth", block: "center" });
-              setTimeout(function () { nameInput.focus(); }, 350);
-              return;
-            }
-            if (!s.tg_none && !s.f_tg) {
-              showToast("Укажите ник в Telegram или отметьте «У меня нет Telegram»");
-              var tgInput2 = document.getElementById("f_tg");
-              tgInput2.scrollIntoView({ behavior: "smooth", block: "center" });
-              setTimeout(function () { tgInput2.focus(); }, 350);
-              return;
-            }
-            var text = buildText(s);
-            window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text), "_blank");
-          });
-        }
-
-        function handleTelegramSend(prebuiltText) {
-          var s = readState();
-          if (!s.f_name && !s.f_car) {
-            showToast("Заполните хотя бы имя и машину");
-            var nameInput = document.getElementById("f_name");
-            nameInput.scrollIntoView({ behavior: "smooth", block: "center" });
-            setTimeout(function () { nameInput.focus(); }, 350);
-            return;
-          }
-          var text = prebuiltText || buildText(s);
-          copyText(text, "Заявка скопирована - вставьте её в чат в Telegram и отправьте", 4200);
-          window.open(TG_URL, "_blank");
-        }
-
-        if (tgDirectBtn) {
-          tgDirectBtn.addEventListener("click", function () { handleTelegramSend(null); });
-        }
-        if (tgBtn) {
-          tgBtn.addEventListener("click", function () {
-            handleTelegramSend(resultText.value ? resultText.value : null);
-          });
-        }
 
         document.getElementById("copyBtn").addEventListener("click", function () {
           copyText(resultText.value, "Заявка скопирована - можно вставлять в Telegram");
@@ -1016,7 +932,7 @@
           "7. К какой дате машина нужна? Готовы подождать, если ожидание даст цену или условия лучше?",
           "8. Ваш ник в Telegram (например, @username). После ваших ответов мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой.",
           "",
-          "Как ответите - сразу начнём работу и вернёмся с расчётом."
+          "В конце нажмите кнопку \"Отправить заявку\" - и заявка сразу придёт мне."
         ].join("\n");
         document.getElementById("copyQuestions").addEventListener("click", function () {
           copyText(QUESTIONS, "Вопросы скопированы - вставьте в WhatsApp клиенту");
