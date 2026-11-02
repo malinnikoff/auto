@@ -312,7 +312,7 @@
           <h2 id="clientCardTitle">Клиент</h2>
           <div class="field">
             <label class="lbl" for="f_name"><span class="num">1</span><span id="lblNameText">Имя клиента</span></label>
-            <input type="text" id="f_name" autocomplete="name" placeholder="Например, Севара" />
+            <input type="text" id="f_name" autocomplete="name" placeholder="Например, Анна" />
           </div>
           <div class="field">
             <label class="lbl" for="f_phone"><span class="num">2</span><span id="lblPhoneText">Телефон</span> <span class="opt">необязательно</span></label>
@@ -371,7 +371,7 @@
           <div id="creditBlock">
             <div class="field">
               <label class="lbl" for="f_score"><span class="num">11</span>Кредитный скор</label>
-              <input type="text" id="f_score" inputmode="numeric" placeholder="Например, 750" />
+              <input type="text" id="f_score" inputmode="numeric" placeholder="Например, 720" />
             </div>
             <fieldset>
               <legend class="lbl"><span class="num">12</span>SSN есть?</legend>
@@ -390,7 +390,7 @@
             </fieldset>
             <div class="field">
               <label class="lbl" for="f_down"><span class="num">14</span>Первоначальный взнос, $</label>
-              <input type="text" id="f_down" inputmode="numeric" placeholder="Например, 10000" />
+              <input type="text" id="f_down" inputmode="numeric" placeholder="Например, 5000" />
             </div>
           </div>
         </section>
@@ -428,7 +428,7 @@
             <p class="trade-note">Эта информация нужна, чтобы оценить ваш автомобиль.</p>
             <div class="field">
               <label class="lbl" for="f_photos">Фото вашего автомобиля</label>
-              <p class="photo-hint">Прикрепите 2 фото снаружи - они нужны, чтобы оценить ваш автомобиль, и уйдут вместе с заявкой.</p>
+              <p class="photo-hint">Прикрепите фото вашего автомобиля - минимум 3: два снаружи и одно внутри, где видно салон и сиденья. Чем больше фото, тем точнее оценим ваш автомобиль.</p>
               <input type="file" id="f_photos" accept="image/*" multiple />
               <div class="photo-grid" id="photoGrid"></div>
               <p class="photo-count" id="photoCount" hidden></p>
@@ -440,11 +440,11 @@
           <h2>Доставка и сроки</h2>
           <div class="field">
             <label class="lbl" for="f_state"><span class="num">16</span>Штат</label>
-            <input type="text" id="f_state" placeholder="Например, Pennsylvania" />
+            <input type="text" id="f_state" placeholder="Например, Florida" />
           </div>
           <div class="field">
             <label class="lbl" for="f_city"><span class="num">17</span>Город</label>
-            <input type="text" id="f_city" placeholder="Например, Pittsburgh" />
+            <input type="text" id="f_city" placeholder="Например, Miami" />
           </div>
           <fieldset>
             <legend class="lbl"><span class="num">18</span>Доставка</legend>
@@ -459,7 +459,7 @@
           </div>
           <div class="field">
             <label class="lbl" for="f_wait"><span class="num">20</span>Готов ждать ради выгоды? <span class="opt">необязательно</span></label>
-            <input type="text" id="f_wait" placeholder="Например, до конца ноября, если будет дешевле" />
+            <input type="text" id="f_wait" placeholder="Например, да, если будет дешевле" />
           </div>
           <div class="field">
             <label class="lbl" for="f_notes"><span class="num">21</span>Заметки <span class="opt">необязательно</span></label>
@@ -524,7 +524,7 @@
         var TG_URL = "https://t.me/dmtriy_miami";
         var toast = document.getElementById("toast");
         var RECEIVER_URL = "https://script.google.com/macros/s/AKfycbw1EFt_OfvsK_SObPlHlllWAy41W2kClOfg0XR5jOq-QBbyG050awcfL4AG2WMQ0Edy/exec";
-        var MAX_PHOTOS = 6;
+        var MAX_PHOTOS = 10;
         var tradePhotos = [];
         var photoInput = document.getElementById("f_photos");
         var photoGrid = document.getElementById("photoGrid");
@@ -1011,7 +1011,7 @@
           "2. Как планируете покупать: в кредит, в лизинг или за наличные?",
           "3. Если в кредит или лизинг: какой у вас примерно кредитный скор? Есть ли SSN? Брали раньше машину в кредит или лизинг в США?",
           "4. Сколько готовы внести как первоначальный взнос?",
-          "5. Есть ли машина, которую хотите отдать в зачёт (трейд-ин)? Если да - какая машина (марка и модель), год, пробег в милях, VIN-номер и payoff - сколько осталось платить по кредиту (если кредита за машину нет - напишите 0). Эта информация нужна, чтобы мы оценили ваш автомобиль. Прикрепите 2 фото вашего автомобиля снаружи прямо в форме - они уйдут вместе с заявкой.",
+          "5. Есть ли машина, которую хотите отдать в зачёт (трейд-ин)? Если да - какая машина (марка и модель), год, пробег в милях, VIN-номер и payoff - сколько осталось платить по кредиту (если кредита за машину нет - напишите 0). Эта информация нужна, чтобы мы оценили ваш автомобиль. Прикрепите фото вашего автомобиля прямо в форме - минимум 3: два снаружи и одно внутри, где видно салон.",
           "6. В каком вы штате и городе? Нужна доставка под дом или заберёте сами?",
           "7. К какой дате машина нужна? Готовы подождать, если ожидание даст цену или условия лучше?",
           "8. Ваш ник в Telegram (например, @username). После ваших ответов мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой.",
