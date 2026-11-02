@@ -214,6 +214,39 @@
       .btn-block { width: 100%; }
       .send-hint { margin: 12px 2px 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
 
+      .btn-send { background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 58px; font-size: 18px; }
+      .btn-send:disabled { opacity: .6; cursor: default; }
+      .btn-send:active { filter: brightness(.92); }
+      .messenger-cap { margin: 14px 2px 10px; font-size: 14.5px; color: var(--ink-3); text-align: center; }
+      .send-error { margin: 10px 2px 0; font-size: 15.5px; line-height: 1.45; color: var(--danger); }
+      .photo-soft { margin: 10px 2px 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+      .send-success {
+        margin-top: 16px; background: #e7f6ee; border: 1px solid #9fd8b6; border-radius: 14px;
+        padding: 18px 16px; box-shadow: var(--shadow);
+      }
+      .send-success h2 { margin: 0 0 6px; font-size: 21px; color: #0d7a3e; }
+      .send-success p { margin: 0; font-size: 16.5px; line-height: 1.5; }
+      @media (prefers-color-scheme: dark) {
+        .send-success { background: #14301f; border-color: #2c5c40; }
+        .send-success h2 { color: #4cc38a; }
+      }
+      .trade-note + .field { margin-top: 14px; }
+      .photo-hint { margin: 0 0 10px; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+      input[type="file"] {
+        width: 100%; font: inherit; font-size: 15.5px; color: var(--ink-2);
+        background: var(--surface); border: 1.5px dashed var(--line); border-radius: 10px; padding: 12px;
+      }
+      .photo-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .photo-grid:empty { margin-top: 0; }
+      .thumb { position: relative; width: 84px; height: 84px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); flex: 0 0 auto; }
+      .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .thumb button {
+        position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; min-height: 0;
+        padding: 0; border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff;
+        font-size: 15px; line-height: 1; cursor: pointer;
+      }
+      .photo-count { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-3); }
+
       body.client-mode .bar .row { flex-direction: column; }
       body.client-mode #waDirectBtn { width: 100%; min-height: 58px; font-size: 18px; }
       body.client-mode #tgDirectBtn { width: 100%; min-height: 58px; font-size: 18px; }
@@ -392,7 +425,14 @@
               <label class="lbl" for="f_towed">Payoff - сколько осталось платить по кредиту, $</label>
               <input type="text" id="f_towed" inputmode="numeric" placeholder="Если кредита за машину нет - напишите 0" />
             </div>
-            <p class="trade-note">Эта информация нужна, чтобы мы оценили ваш автомобиль. И ещё: пришлите два фото машины снаружи сюда же в WhatsApp после отправки заявки - по фото и VIN мы дадим оценку.</p>
+            <p class="trade-note">Эта информация нужна, чтобы оценить ваш автомобиль.</p>
+            <div class="field">
+              <label class="lbl" for="f_photos">Фото вашего автомобиля</label>
+              <p class="photo-hint">Прикрепите 2 фото снаружи - они нужны, чтобы оценить ваш автомобиль, и уйдут вместе с заявкой.</p>
+              <input type="file" id="f_photos" accept="image/*" multiple />
+              <div class="photo-grid" id="photoGrid"></div>
+              <p class="photo-count" id="photoCount" hidden></p>
+            </div>
           </div>
         </section>
 
@@ -428,7 +468,11 @@
         </section>
       </form>
 
-      <div class="bar">
+      <div class="bar" id="sendBar">
+        <button type="button" class="btn-send" id="sendBtn">Отправить заявку</button>
+        <p class="send-error" id="sendError" hidden>Не получилось отправить. Попробуйте ещё раз - или отправьте заявку через WhatsApp или Telegram кнопками ниже.</p>
+        <p class="photo-soft" id="photoSoft" hidden>Вы выбрали трейд-ин, но не прикрепили фото. Заявку можно отправить и без них - но с фото мы оценим ваш автомобиль точнее.</p>
+        <p class="messenger-cap" id="messengerCap">или отправьте через мессенджер</p>
         <div class="row">
           <button type="button" class="btn-primary" id="buildBtn">Сформировать заявку</button>
           <a class="btn btn-wa" id="waDirectBtn" href="#" target="_blank" rel="noopener" hidden>Отправить в WhatsApp</a>
@@ -436,6 +480,11 @@
           <button type="button" class="btn-ghost" id="clearBtn">Очистить форму</button>
         </div>
         <p class="send-hint">Если отправите через Telegram - ваш ник мы увидим сразу из чата, вписывать его в форму не обязательно</p>
+      </div>
+
+      <div class="send-success" id="sendSuccess" hidden>
+        <h2>Заявка отправлена!</h2>
+        <p>Мы получили вашу заявку. Дальше мы создадим чат в Telegram - там будет весь процесс подбора и покупки.</p>
       </div>
 
       <section class="panel" id="resultPanel" hidden>
@@ -474,6 +523,17 @@
         var tgBtn = document.getElementById("tgBtn");
         var TG_URL = "https://t.me/dmtriy_miami";
         var toast = document.getElementById("toast");
+        var RECEIVER_URL = "https://script.google.com/macros/s/AKfycbw1EFt_OfvsK_SObPlHlllWAy41W2kClOfg0XR5jOq-QBbyG050awcfL4AG2WMQ0Edy/exec";
+        var MAX_PHOTOS = 6;
+        var tradePhotos = [];
+        var photoInput = document.getElementById("f_photos");
+        var photoGrid = document.getElementById("photoGrid");
+        var photoCountEl = document.getElementById("photoCount");
+        var sendBtn = document.getElementById("sendBtn");
+        var sendError = document.getElementById("sendError");
+        var sendBar = document.getElementById("sendBar");
+        var sendSuccess = document.getElementById("sendSuccess");
+        var photoSoft = document.getElementById("photoSoft");
 
         var isPro = false;
         try { isPro = new URLSearchParams(window.location.search).get("pro") === "1"; } catch (e) {}
@@ -484,6 +544,8 @@
           if (proTitle) proTitle.textContent = "Заявка на авто";
           var proSub = document.getElementById("subText");
           if (proSub) proSub.textContent = "Заполните по клиенту - заявка соберётся сама";
+          var capEl = document.getElementById("messengerCap");
+          if (capEl) capEl.hidden = true;
         }
 
         if (!isPro) {
@@ -529,6 +591,7 @@
           TEXT_FIELDS.forEach(function (id) { s[id] = val(id); });
           RADIO_GROUPS.forEach(function (n) { s[n] = radioVal(n); });
           s.tg_none = tgNoneBox.checked;
+          s.photoCount = tradePhotos.length;
           return s;
         }
         function applyState(s) {
@@ -538,11 +601,16 @@
           if (typeof s.tg_none === "boolean") tgNoneBox.checked = s.tg_none;
         }
 
+        function updatePhotoSoft() {
+          photoSoft.hidden = !(radioVal("trade") === "yes" && tradePhotos.length === 0);
+        }
+
         function updateVisibility() {
           var pay = radioVal("pay");
           creditBlock.hidden = !(pay === "credit" || pay === "lease");
           tradeBlock.hidden = radioVal("trade") !== "yes";
           document.getElementById("f_tg").disabled = tgNoneBox.checked;
+          updatePhotoSoft();
         }
 
         function saveDraft() {
@@ -630,6 +698,7 @@
             if (s.f_tvin) tParts.push("VIN " + s.f_tvin);
             if (s.f_towed) tParts.push("payoff $" + cleanMoney(s.f_towed));
             lines.push("Трейд-ин: " + (tParts.length ? tParts.join(", ") : "есть"));
+            if (s.photoCount) lines.push("Фото: " + s.photoCount + " шт. (прикреплены к заявке)");
           } else {
             lines.push("Трейд-ин: нет");
           }
@@ -700,6 +769,137 @@
             list.appendChild(box);
           });
         }
+
+        function renderPhotos() {
+          photoGrid.innerHTML = "";
+          tradePhotos.forEach(function (file, idx) {
+            var box = document.createElement("div");
+            box.className = "thumb";
+            var img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.alt = "Фото автомобиля " + (idx + 1);
+            var del = document.createElement("button");
+            del.type = "button";
+            del.textContent = "×";
+            del.setAttribute("aria-label", "Удалить фото " + (idx + 1));
+            del.addEventListener("click", function () {
+              tradePhotos.splice(idx, 1);
+              renderPhotos();
+              updatePhotoSoft();
+            });
+            box.appendChild(img);
+            box.appendChild(del);
+            photoGrid.appendChild(box);
+          });
+          if (tradePhotos.length) {
+            photoCountEl.hidden = false;
+            photoCountEl.textContent = "Прикреплено фото: " + tradePhotos.length + " из " + MAX_PHOTOS;
+          } else {
+            photoCountEl.hidden = true;
+          }
+        }
+
+        photoInput.addEventListener("change", function () {
+          var files = Array.prototype.slice.call(photoInput.files || []);
+          var room = MAX_PHOTOS - tradePhotos.length;
+          if (files.length > room) {
+            showToast("Можно прикрепить не больше " + MAX_PHOTOS + " фото");
+            files = files.slice(0, Math.max(room, 0));
+          }
+          files.forEach(function (f) {
+            if (f.type && f.type.indexOf("image/") === 0) tradePhotos.push(f);
+          });
+          photoInput.value = "";
+          renderPhotos();
+          updatePhotoSoft();
+        });
+
+        function processPhoto(file, index) {
+          return new Promise(function (resolve, reject) {
+            var url = URL.createObjectURL(file);
+            var img = new Image();
+            img.onload = function () {
+              try {
+                var maxSide = Math.max(img.naturalWidth, img.naturalHeight);
+                var scale = maxSide > 1600 ? 1600 / maxSide : 1;
+                var w = Math.max(1, Math.round(img.naturalWidth * scale));
+                var h = Math.max(1, Math.round(img.naturalHeight * scale));
+                var canvas = document.createElement("canvas");
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+                URL.revokeObjectURL(url);
+                var dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+                resolve({ name: "photo-" + (index + 1) + ".jpg", mime: "image/jpeg", base64: dataUrl.split(",")[1] });
+              } catch (err) { reject(err); }
+            };
+            img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("photo load failed")); };
+            img.src = url;
+          });
+        }
+
+        function focusField(id) {
+          var el = document.getElementById(id);
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(function () { el.focus(); }, 350);
+        }
+
+        sendBtn.addEventListener("click", function () {
+          var s = readState();
+          if (!s.f_name && !s.f_car) {
+            showToast(isPro ? "Заполните хотя бы имя клиента и машину" : "Заполните хотя бы ваше имя и машину");
+            focusField("f_name");
+            return;
+          }
+          if (!s.tg_none && !s.f_tg) {
+            showToast("Укажите ник в Telegram или отметьте «У меня нет Telegram»");
+            focusField("f_tg");
+            return;
+          }
+          sendError.hidden = true;
+          sendBtn.disabled = true;
+          sendBtn.textContent = "Отправляю...";
+          var usePhotos = s.trade === "yes" ? tradePhotos.slice() : [];
+          var jobs = usePhotos.map(function (f, i) { return processPhoto(f, i); });
+          Promise.all(jobs).then(function (photos) {
+            var brief = buildText(s);
+            var payload = {
+              name: s.f_name,
+              phone: s.f_phone,
+              telegram: s.tg_none ? "" : s.f_tg,
+              type: s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА",
+              car: [s.f_car, s.f_year].filter(Boolean).join(", "),
+              brief: brief,
+              photos: photos
+            };
+            return fetch(RECEIVER_URL, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              mode: "no-cors",
+              body: JSON.stringify(payload)
+            }).then(function () { return brief; });
+          }).then(function (brief) {
+            if (isPro) {
+              var carLine = [s.f_car, s.f_year].filter(Boolean).join(", ");
+              var arr = loadHistory();
+              arr.unshift({
+                id: Date.now(),
+                ts: Date.now(),
+                title: (s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА") + (s.f_name ? " - " + s.f_name : ""),
+                name: s.f_name, car: carLine, text: brief
+              });
+              saveHistory(arr); renderHistory();
+            }
+            sendBar.hidden = true;
+            sendSuccess.hidden = false;
+            sendSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
+          }).catch(function () {
+            sendBtn.disabled = false;
+            sendBtn.textContent = "Отправить заявку";
+            sendError.hidden = false;
+            sendError.scrollIntoView({ behavior: "smooth", block: "center" });
+          });
+        });
 
         document.getElementById("buildBtn").addEventListener("click", function () {
           var s = readState();
@@ -791,6 +991,11 @@
         document.getElementById("clearBtn").addEventListener("click", function () {
           form.reset();
           setRadio("chosen", "chosen"); setRadio("pay", "credit"); setRadio("trade", "no"); setRadio("delivery", "home");
+          tradePhotos = [];
+          renderPhotos();
+          sendError.hidden = true;
+          sendBtn.disabled = false;
+          sendBtn.textContent = "Отправить заявку";
           updateVisibility();
           resultPanel.hidden = true;
           resultText.value = "";
@@ -806,7 +1011,7 @@
           "2. Как планируете покупать: в кредит, в лизинг или за наличные?",
           "3. Если в кредит или лизинг: какой у вас примерно кредитный скор? Есть ли SSN? Брали раньше машину в кредит или лизинг в США?",
           "4. Сколько готовы внести как первоначальный взнос?",
-          "5. Есть ли машина, которую хотите отдать в зачёт (трейд-ин)? Если да - какая машина (марка и модель), год, пробег в милях, VIN-номер и payoff - сколько осталось платить по кредиту (если кредита за машину нет - напишите 0). Эта информация нужна, чтобы мы оценили ваш автомобиль. И ещё: пришлите два фото машины снаружи сюда же в WhatsApp - по фото и VIN мы дадим оценку.",
+          "5. Есть ли машина, которую хотите отдать в зачёт (трейд-ин)? Если да - какая машина (марка и модель), год, пробег в милях, VIN-номер и payoff - сколько осталось платить по кредиту (если кредита за машину нет - напишите 0). Эта информация нужна, чтобы мы оценили ваш автомобиль. Прикрепите 2 фото вашего автомобиля снаружи прямо в форме - они уйдут вместе с заявкой.",
           "6. В каком вы штате и городе? Нужна доставка под дом или заберёте сами?",
           "7. К какой дате машина нужна? Готовы подождать, если ожидание даст цену или условия лучше?",
           "8. Ваш ник в Telegram (например, @username). После ваших ответов мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой.",
