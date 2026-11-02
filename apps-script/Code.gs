@@ -14,6 +14,8 @@
  *   NOTIFY_EMAIL     — почта для копии уведомлений (необязательно)
  *   CRM_WEBHOOK_URL  — адрес CRM, когда она будет готова (необязательно)
  *   CONTRACTS_FOLDER_ID — папка Google Drive для договоров (создаётся сама при первой загрузке)
+ *   CREDIT_TELEGRAM_TOKEN — бот для заявок по кредитной истории (необязательно; без него идут в основной бот)
+ *   CREDIT_TELEGRAM_CHAT_ID — chat id для этого бота (необязательно; по умолчанию TELEGRAM_CHAT_ID)
  */
 
 var SHEET_NAME = 'Заявки';
@@ -68,6 +70,7 @@ function doPost(e) {
     if (data.website) return json_({ ok: true, id: 'OK' });
 
     if (data.type === 'contract') return handleContract_(data);
+    if (data.type === 'credit') return handleCredit_(data);
 
     // Отчёт сайта о сбое отправки договора (без личных данных): виден в «Выполнениях» скрипта.
     if (data.type === 'clientError') {
@@ -224,6 +227,78 @@ function contractSheet_() {
   return sh;
 }
 
+/* ================= Кредитная история ================= */
+
+var CREDIT_SHEET = 'Кредитная история';
+var CREDIT_COLUMNS = [
+  ['id', 'Номер'], ['created', 'Дата и время'], ['status', 'Статус'], ['name', 'Имя'], ['phone', 'Телефон'],
+  ['utm_source', 'utm_source'], ['utm_medium', 'utm_medium'], ['utm_campaign', 'utm_campaign'], ['utm_content', 'utm_content'],
+  ['referrer', 'Откуда пришёл'], ['notes', 'Заметки']
+];
+var CREDIT_STATUSES = ['Новая', 'Связался', 'Не дозвонился', 'В работе', 'Перешёл в покупку', 'Не целевая'];
+
+function handleCredit_(d) {
+  function s(v, max) { return String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max || 80); }
+  var l = { name: s(d.name), phone: s(d.phone, 20), utm_source: s(d.utm_source), utm_medium: s(d.utm_medium),
+    utm_campaign: s(d.utm_campaign), utm_content: s(d.utm_content), referrer: s(d.referrer, 300) };
+  if (d.consent !== true) return json_({ ok: false, error: 'consent' });
+  if (l.name.length < 2) return json_({ ok: false, error: 'name' });
+  if (!/^\+\d{8,15}$/.test(l.phone)) return json_({ ok: false, error: 'phone' });
+
+  var cache = CacheService.getScriptCache();
+  var dupKey = 'k' + l.phone;
+  var prevId = cache.get(dupKey);
+  if (prevId) return json_({ ok: true, id: prevId, duplicate: true });
+
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var n = Number(props.getProperty('LAST_CREDIT_ID') || '0') + 1;
+    props.setProperty('LAST_CREDIT_ID', String(n));
+    l.id = 'K' + ('000' + n).slice(-3);
+    l.created = new Date();
+    l.status = 'Новая';
+    var sh = creditSheet_();
+    var asText = { id: 1, phone: 1 };
+    sh.appendRow(CREDIT_COLUMNS.map(function (c) { var v = l[c[0]] !== undefined ? l[c[0]] : ''; return asText[c[0]] && v !== '' ? "'" + v : v; }));
+    SpreadsheetApp.flush();
+  } finally {
+    lock.releaseLock();
+  }
+  cache.put(dupKey, l.id, 120);
+
+  var text = '💳 <b>КРЕДИТНАЯ ИСТОРИЯ</b> · #' + l.id + ' · ' + Utilities.formatDate(l.created, Session.getScriptTimeZone(), 'dd.MM HH:mm') + '\n' +
+    '👤 ' + esc_(l.name) + ' · ' + esc_(phoneText_(l.phone)) + '\n' +
+    'Хочет улучшить кредитную историю перед покупкой машины\n' +
+    'Откуда: ' + esc_(sourceText_(l));
+  var digits = l.phone.replace(/\D/g, '');
+  try {
+    sendTelegram_(text, [[{ text: 'WhatsApp', url: 'https://wa.me/' + digits }, { text: 'Таблица', url: sheetLink_(creditSheet_()) }]], 'credit');
+  } catch (err) { console.error('Telegram: ' + err); }
+  try {
+    var to = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL');
+    if (to) MailApp.sendEmail({ to: to, subject: 'Кредитная история #' + l.id + ': ' + l.name, body: text.replace(/<[^>]+>/g, '') });
+  } catch (err) { console.error('Email: ' + err); }
+
+  return json_({ ok: true, id: l.id });
+}
+
+function creditSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(CREDIT_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(CREDIT_SHEET);
+    sh.getRange(1, 1, 1, CREDIT_COLUMNS.length).setValues([CREDIT_COLUMNS.map(function (c) { return c[1]; })])
+      .setFontWeight('bold').setBackground('#FFD600');
+    sh.setFrozenRows(1);
+    sh.getRange('B2:B').setNumberFormat('dd.MM.yyyy HH:mm');
+    sh.getRange(2, 3, sh.getMaxRows() - 1, 1).setDataValidation(
+      SpreadsheetApp.newDataValidation().requireValueInList(CREDIT_STATUSES, true).setAllowInvalid(false).build());
+  }
+  return sh;
+}
+
 function esc_(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
 /* ================= Проверка и оценка ================= */
@@ -361,9 +436,14 @@ function notifyTelegram_(l) {
   ]]);
 }
 
-function sendTelegram_(html, buttons) {
+// bot: 'credit' — отдельный бот для кредитной истории, если он настроен
+function sendTelegram_(html, buttons, bot) {
   var p = PropertiesService.getScriptProperties();
   var token = p.getProperty('TELEGRAM_TOKEN'), chat = p.getProperty('TELEGRAM_CHAT_ID');
+  if (bot === 'credit' && p.getProperty('CREDIT_TELEGRAM_TOKEN')) {
+    token = p.getProperty('CREDIT_TELEGRAM_TOKEN');
+    chat = p.getProperty('CREDIT_TELEGRAM_CHAT_ID') || chat;
+  }
   if (!token || !chat) throw new Error('не заданы TELEGRAM_TOKEN / TELEGRAM_CHAT_ID');
   var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
     method: 'post',
@@ -411,6 +491,7 @@ function setup() {
   setupSheet_(sh);
   contractSheet_();
   contractsFolder_();
+  creditSheet_();
   Logger.log('Лист «' + SHEET_NAME + '» готов: ' + SpreadsheetApp.getActiveSpreadsheet().getUrl());
 }
 

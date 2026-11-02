@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Новая машина в США · dmitry_miami</title>
-<meta name="description" content="Дилер зарабатывает на том, чего покупатель не знает. Мы запрашиваем цены у разных дилеров вашей марки, торгуемся и убираем из договора всё, за что вы не обязаны платить.">
-<meta property="og:title" content="Вы выбираете машину. Мы торгуемся с дилером">
-<meta property="og:description" content="Оставьте заявку за 2 минуты. Я лично перезвоню, и мы возьмём ваш запрос в работу.">
+<title>Покупка авто в США под ключ · dmitry_miami</title>
+<meta name="description" content="Подберём авто, поторгуемся с дилером о цене и уберём лишние платежи из договора. Итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно.">
+<meta property="og:title" content="Вы выбираете машину. Всё остальное делаем мы">
+<meta property="og:description" content="Бесплатный расчёт со всеми налогами и сборами до покупки. Заявка за 2 минуты.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://malinnikoff.github.io/auto/">
-<meta property="og:image" content="https://malinnikoff.github.io/auto/assets/og.jpg">
+<meta property="og:image" content="https://malinnikoff.github.io/auto/assets/og.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -107,7 +107,8 @@ html{scroll-padding-top:90px}
 
 /* pains */
 .pains{display:grid;gap:12px}
-.pain{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:18px 18px 16px}
+#na-chem{background:#ECECEC}
+.pain{background:var(--bg);border:1px solid #E2E2E2;border-radius:18px;padding:18px 18px 16px;box-shadow:0 8px 20px -16px rgba(0,0,0,.3)}
 .pain h3{font-size:17.5px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
 .pain > p{font-size:15px;line-height:1.5;color:var(--text)}
 .fix{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;margin-top:14px;padding-top:14px;border-top:1px dashed #DADFE6;font-size:15px;line-height:1.45;color:var(--fg)}
@@ -277,6 +278,17 @@ select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.
 .rid{display:inline-block;font-variant-numeric:tabular-nums;font-size:14px;background:var(--alt);border-radius:8px;padding:8px 12px;margin:16px 0 6px;color:var(--muted)}
 .nx{padding:14px 0;border-top:1px solid var(--line);font-size:15px;color:var(--text)}
 .nx:first-of-type{margin-top:12px}
+.wa-done{margin-top:14px}
+.offer-h{margin-top:28px;font-size:19px;font-weight:800;text-align:center}
+.form-eyebrow{text-align:center;margin-bottom:12px}
+.form-title{font-size:clamp(28px,8.4vw,44px);line-height:1.1;letter-spacing:-.01em}
+.form-title .mark{white-space:nowrap}
+.hint{margin-top:6px;font-size:13px;line-height:1.4;color:var(--muted)}
+.chk-title{text-wrap:balance}
+.chk-free{display:table;margin:12px auto 0;padding:5px 16px 7px;border-radius:999px;background:var(--yellow);font-size:.62em;line-height:1.1}
+.credit-badge{display:table;margin:-6px auto 14px;font-size:14px;padding:6px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--text)}
+.credit-more{margin-top:16px;text-align:center;font-size:14px;color:var(--soft)}
+.credit-more a{color:var(--text)}
 .nx b{display:block;color:var(--fg)}
 
 /* footer */
@@ -310,12 +322,13 @@ footer a{color:var(--muted)}
   </div>
   <nav class="menu" id="menu" hidden>
     <div class="wrap">
-      <a href="#na-chem">На чём дилер зарабатывает</a>
       <a href="#kak">Как это работает</a>
-      <a href="#primer">Пример предложения</a>
-      <a href="#kto">Наша команда</a>
+      <a href="#na-chem">На чём дилер зарабатывает</a>
+      <a href="#primer">Пример расчёта</a>
+      <a href="#kto">Кто поможет</a>
       <a href="#stoimost">Стоимость</a>
       <a href="#dogovor">Проверка договора</a>
+      <a href="#kredit">Кредитная история</a>
       <a href="#voprosy">Вопросы</a>
       <a href="#zayavka" class="menu-cta">Оставить заявку</a>
     </div>
@@ -324,16 +337,31 @@ footer a{color:var(--muted)}
 
 <div class="wrap hero-wrap" id="top">
   <main class="hero">
-    <p class="eyebrow">9 лет в автобизнесе · Майами, Флорида</p>
-    <h1>Вы выбираете машину.<br><span class="mark">Мы торгуемся с&nbsp;дилером</span></h1>
-    <p class="hero-sub">Дилер зарабатывает на том, чего вы не знаете. Мы запрашиваем цены у разных дилеров, торгуемся и убираем из договора всё лишнее.</p>
+    <p class="eyebrow">Покупка авто в&nbsp;США под&nbsp;ключ</p>
+    <h1>Вы выбираете машину.<br><span class="mark">Всё остальное делаем&nbsp;мы</span></h1>
+    <p class="hero-sub">Подберём авто, поторгуемся с&nbsp;дилером о&nbsp;цене и&nbsp;уберём лишние платежи из&nbsp;договора. Итоговую сумму со&nbsp;всеми налогами и&nbsp;сборами скажем заранее и&nbsp;бесплатно.</p>
     <div class="hero-btns">
-      <a class="btn" href="#zayavka" data-cta="hero">Узнать цену на мою машину</a>
-      <a class="btn btn-ghost" href="#dogovor" data-cta="hero-dogovor">У меня есть договор от дилера</a>
+      <a class="btn" href="#zayavka" data-cta="hero">Получить бесплатный расчёт</a>
+      <a class="btn btn-ghost" href="#dogovor" data-cta="hero-dogovor">Проверить договор или предложение</a>
     </div>
     <p class="micro">Заявка за 2 минуты · Без SSN и документов</p>
   </main>
 </div>
+
+<section class="how bg-blue" id="kak">
+  <div class="wrap">
+    <h2>Как это работает</h2>
+    <ol class="steps">
+      <li class="step"><span class="num">1</span><div><h3>Вы оставляете заявку</h3><p>Напишите, какая машина нужна, бюджет и&nbsp;сроки. Это займёт 2&nbsp;минуты. <a href="#zayavka" data-cta="step1">Получить бесплатный расчёт</a></p></div></li>
+      <li class="step"><span class="num">2</span><div><h3>Я вам звоню</h3><p>В течение дня. Знакомимся и&nbsp;коротко уточняем детали, чтобы подобрать для вас лучшие варианты.</p></div></li>
+      <li class="step"><span class="num">3</span><div><h3>Мы торгуемся с&nbsp;дилерами за&nbsp;вас</h3><p>Узнаём цены у&nbsp;разных дилеров, торгуемся о&nbsp;цене и&nbsp;убираем из&nbsp;договора лишние платежи.</p></div></li>
+      <li class="step"><span class="num">4</span><div><h3>Вы узнаёте итоговую сумму до&nbsp;покупки</h3><p>Присылаем подробный расчёт в&nbsp;PDF: цена машины, все налоги и&nbsp;сборы, платёж в&nbsp;месяц и, если сдаёте свою машину в&nbsp;trade-in, сколько за&nbsp;неё дают. <a href="#primer">Пример ниже</a>.</p></div></li>
+      <li class="step"><span class="num">5</span><div><h3>Мы ведём оформление</h3><p>Кредит, лизинг, trade-in и&nbsp;проверка договора перед подписью.</p></div></li>
+      <li class="step"><span class="num">6</span><div><h3>Вы получаете машину</h3><p>Можно забрать у&nbsp;дилера или получить с&nbsp;доставкой домой, в&nbsp;том числе в&nbsp;другой штат.</p></div></li>
+    </ol>
+    <a class="btn steps-cta" href="#zayavka" data-cta="steps">Получить бесплатный расчёт</a>
+  </div>
+</section>
 
 <section class="bg-grey" id="na-chem">
   <div class="wrap">
@@ -341,11 +369,11 @@ footer a{color:var(--muted)}
     <div class="pains">
       <div class="pain">
         <h3>Дилерский сбор</h3>
-        <p>Плата сверх цены машины. Во Флориде её размер законом не ограничен.</p>
+        <p>Плата сверх цены машины. У&nbsp;разных дилеров её размер сильно отличается.</p>
         <div class="fix"><span class="tick" aria-hidden="true"></span><span><b>Мы:</b> сравниваем сборы разных дилеров и торгуемся за каждую строку.</span></div>
       </div>
       <div class="pain">
-        <h3>Допы и гарантии</h3>
+        <h3>Дополнительные услуги и&nbsp;гарантии</h3>
         <p>Гарантия сверх заводской, защита покрытия, защита шин и дисков, GPS-трекер. Их подают как «всего $30 в месяц», а за 72 месяца это $2 160.</p>
         <div class="fix"><span class="tick" aria-hidden="true"></span><span><b>Мы:</b> оставляем только то, что вам действительно нужно, а остальное убираем из договора.</span></div>
       </div>
@@ -368,29 +396,15 @@ footer a{color:var(--muted)}
     <div class="offer-box">
       <p class="ob-1">Это не обман, так устроена работа&nbsp;дилера.</p>
       <p class="ob-2">Наша работа – видеть каждую из этих строк и убирать из договора всё лишнее.</p>
-      <a class="btn" href="#zayavka" data-cta="pains">Узнать цену на мою машину</a>
+      <a class="btn" href="#zayavka" data-cta="pains">Получить бесплатный расчёт</a>
     </div>
-  </div>
-</section>
-
-<section class="how bg-blue" id="kak">
-  <div class="wrap">
-    <h2>Как это работает</h2>
-    <ol class="steps">
-      <li class="step"><span class="num">1</span><div><h3>Вы оставляете заявку</h3><p>Напишите, какую машину хотите, какой у вас бюджет и когда планируете покупку. Заявка займёт около 2 минут.</p></div></li>
-      <li class="step"><span class="num">2</span><div><h3>Я вам звоню</h3><p>Обычно в течение часа, с 10:00 до 20:00. Задам пару вопросов, чтобы точно понять, что вам нужно.</p></div></li>
-      <li class="step"><span class="num">3</span><div><h3>Мы находим лучшие предложения</h3><p>Связываемся с разными дилерами, узнаём цены и торгуемся за вас. Мы приводим дилерам покупателей каждый месяц, поэтому с нами они договариваются охотнее.</p></div></li>
-      <li class="step"><span class="num">4</span><div><h3>Вы выбираете</h3><p>Мы присылаем подробный расчёт в PDF: какая машина, сколько она стоит, все платежи и сколько платить в месяц. <a href="#primer">Пример ниже</a>.</p></div></li>
-      <li class="step"><span class="num">5</span><div><h3>Мы ведём сделку до конца</h3><p>Помогаем с trade-in, следим за оформлением кредита или лизинга и проверяем договор перед подписью. Машину можно забрать во Флориде или получить с доставкой домой.</p></div></li>
-    </ol>
-    <a class="btn steps-cta" href="#zayavka" data-cta="steps">Узнать цену на мою машину</a>
   </div>
 </section>
 
 <section id="primer">
   <div class="wrap">
-    <h2>Так выглядит наше предложение</h2>
-    <p class="sec-lead">Реальные расчёты для клиентов: каждая цифра расписана по строкам.</p>
+    <h2>Так выглядит расчёт, который вы получите</h2>
+    <p class="sec-lead">Это фрагменты реальных расчётов. Полный расчёт&nbsp;— подробный PDF на&nbsp;несколько страниц.</p>
     <div class="deal-scroll" role="list">
       <article class="deal" role="listitem">
         <div class="deal-photo"><img src="assets/car-lincoln.jpg" alt="Lincoln Navigator 2026" loading="lazy" width="960" height="600"><span class="photo-credit">Фото: Kevauto, CC BY-SA 4.0</span></div>
@@ -405,7 +419,7 @@ footer a{color:var(--muted)}
             <div><span>Сборы дилера</span><b>+$1 889</b></div>
             <div><span>Ваша машина в зачёт</span><b>−$29 000</b></div>
             <div><span>Скидка производителя</span><b>−$1 000</b></div>
-            <div><span>Налоги и госсборы</span><b>+$6 273</b></div>
+            <div><span>Налоги и госсборы (Нью-Йорк)</span><b>+$6 273</b></div>
             <div class="deal-total"><span>Сумма кредита</span><b>$73 052</b></div>
           </div>
         </div>
@@ -415,24 +429,48 @@ footer a{color:var(--muted)}
         <div class="deal-body">
           <div class="deal-tags"><span>Новая · 2026</span><span>Лизинг</span></div>
           <h3>Infiniti QX80 Luxe</h3>
-          <p class="deal-sub">Полный привод, новое поколение</p>
+          <p class="deal-sub">Полный привод, пневмоподвеска, проекция на&nbsp;лобовое стекло</p>
           <div class="deal-pay"><b>$1 115</b><span>в месяц</span></div>
           <p class="deal-terms">33 месяца · 10&nbsp;000 миль в год · взнос&nbsp;$3&nbsp;000</p>
           <div class="deal-rows">
             <div><span>Цена машины</span><b>$96 140</b></div>
             <div><span>Первый взнос</span><b>$3 000</b></div>
-            <div><span>Платёж в месяц</span><b>$1 115</b></div>
             <div><span>Срок</span><b>33 месяца</b></div>
-            <div class="deal-total"><span>Платежи за весь срок</span><b>$36 795</b></div>
+            <div><span>Пробег в год</span><b>10 000 миль</b></div>
+            <div><span>Залоговый депозит</span><b>не нужен</b></div>
+            <div><span>Налоги и сборы</span><b>включены</b></div>
+            <div class="deal-total"><span>Платёж в месяц</span><b>$1 115</b></div>
+          </div>
+        </div>
+      </article>
+      <article class="deal" role="listitem">
+        <div class="deal-photo"><img src="assets/car-rav4.jpg" alt="Toyota RAV4 Limited 2026" loading="lazy" width="960" height="600"></div>
+        <div class="deal-body">
+          <div class="deal-tags"><span>Новая · 2026</span><span>Кредит</span></div>
+          <h3>Toyota RAV4 Limited</h3>
+          <p class="deal-sub">Гибрид, полный привод</p>
+          <div class="deal-pay"><b>$801</b><span>в месяц</span></div>
+          <p class="deal-terms">78 месяцев · ставка 7.99% · первый&nbsp;взнос&nbsp;$10&nbsp;000</p>
+          <div class="deal-rows">
+            <div><span>Цена машины</span><b>$52 999</b></div>
+            <div><span>Сборы дилера</span><b>+$1 505</b></div>
+            <div><span>Налоги</span><b>+$3 320</b></div>
+            <div><span>Регистрация и госсборы</span><b>+$652</b></div>
+            <div><span>Первый взнос</span><b>−$10 000</b></div>
+            <div class="deal-total"><span>Сумма кредита</span><b>$48 475</b></div>
           </div>
         </div>
       </article>
     </div>
     <p class="deal-hint">Листайте вбок · Расчёты предварительные: итоговая ставка зависит от банка</p>
+    <h3 class="offer-h">Что будет в вашем расчёте</h3>
     <ul class="offer-points">
-      <li><span class="tick" aria-hidden="true"></span><span>Все сборы и налоги по строкам</span></li>
-      <li><span class="tick" aria-hidden="true"></span><span>Ставка, платёж и переплата за срок</span></li>
-      <li><span class="tick" aria-hidden="true"></span><span>Trade-in и скидки уже учтены в цене</span></li>
+      <li><span class="tick" aria-hidden="true"></span><span>Подходящие варианты под ваш запрос</span></li>
+      <li><span class="tick" aria-hidden="true"></span><span>Описание, характеристики и комплектация</span></li>
+      <li><span class="tick" aria-hidden="true"></span><span>Цена, налоги и сборы по строкам</span></li>
+      <li><span class="tick" aria-hidden="true"></span><span>Платёж и условия кредита или лизинга</span></li>
+      <li><span class="tick" aria-hidden="true"></span><span>Оценка вашей машины в trade-in</span></li>
+      <li><span class="tick" aria-hidden="true"></span><span>Следующие шаги до получения машины</span></li>
     </ul>
   </div>
 </section>
@@ -440,22 +478,22 @@ footer a{color:var(--muted)}
 
 <section class="bg-grey" id="kto">
   <div class="wrap">
-    <h2>Наша команда</h2>
+    <h2>Кто будет вам помогать</h2>
     <figure class="team-photo">
       <img src="assets/team.jpg" alt="Алексей Рейман, Дмитрий Малинников и Дмитрий Шостак" loading="lazy" width="1670" height="942">
-      <figcaption>Слева направо: Алексей, Дмитрий, Дмитрий</figcaption>
+      <figcaption>Слева направо: Алексей&nbsp;Рейман, Дмитрий&nbsp;Малинников, Дмитрий&nbsp;Шостак</figcaption>
     </figure>
     <div class="people">
       <div class="person person-main">
         <h3>Дмитрий Малинников</h3>
-        <p class="role">Клиенты и кредитная история</p>
-        <p>Помогаю разобраться, как купить машину в США без лишних поездок по дилерам и сэкономить время и деньги. После заявки лично звоню вам, уточняю, какая машина нужна, бюджет и сроки, и мы берём ваш запрос в работу. Также могу помочь улучшить кредитную историю перед покупкой.</p>
-        <div class="person-facts"><span><b>9 лет</b> в автобизнесе</span><span><b>12 лет</b> в США</span><span><b>3 года</b> с кредитной историей</span></div>
+        <p class="role">Работа с клиентами и кредитная история</p>
+        <p>Первым знакомлюсь с&nbsp;вами и&nbsp;разбираюсь в&nbsp;задаче: какая машина нужна, бюджет и&nbsp;сроки. Дальше вместе с&nbsp;командой ведём покупку до&nbsp;получения машины. Если нужно, помогаю улучшить кредитную историю перед покупкой.</p>
+        <div class="person-facts"><span><b>9 лет</b> в автобизнесе</span><span><b>12 лет</b> в США</span><span><b>3 года</b> улучшаю кредитные истории</span></div>
       </div>
       <div class="person">
         <h3>Алексей Рейман</h3>
         <p class="role">Договоры и финансы</p>
-        <p>Работал финансистом и в премиальном дилерском центре. Разбирает договоры по строкам и объясняет, как во Флориде на самом деле устроены кредит и лизинг.</p>
+        <p>Работал финансистом и в премиальном дилерском центре. Разбирает договоры по строкам и объясняет, как в&nbsp;США на&nbsp;самом деле устроены кредит и&nbsp;лизинг.</p>
       </div>
       <div class="person">
         <h3>Дмитрий Шостак</h3>
@@ -472,13 +510,13 @@ footer a{color:var(--muted)}
 
 <section id="stoimost">
   <div class="wrap">
-    <h2>Сколько это стоит для вас</h2>
+    <h2>Сколько стоят наши услуги</h2>
     <div class="price-main">
       <div class="price-zero">$0</div>
-      <p class="price-lead">В большинстве случаев нам платит дилер. Для вас услуга ничего не стоит.</p>
+      <p class="price-lead">В большинстве случаев нам платит дилер, поэтому для вас это бесплатно.</p>
       <div class="price-qa">
-        <details><summary>За что нам платит дилер?</summary><p>Дилер платит нам фиксированную сумму за приведённого покупателя.</p></details>
-        <details><summary>А если дилер не платит?</summary><p>Тогда мы заранее, ещё до начала работы, назовём её стоимость. Никаких сюрпризов на подписании.</p></details>
+        <details><summary>За что нам платит дилер?</summary><p>Дилер платит нам за&nbsp;каждого приведённого покупателя. На&nbsp;стоимость машины для вас это не&nbsp;влияет.</p></details>
+        <details><summary>А если дилер не платит?</summary><p>Тогда стоимость наших услуг назовём заранее, до&nbsp;начала работы. Никаких сюрпризов.</p></details>
       </div>
     </div>
     <div class="price-row">
@@ -490,8 +528,9 @@ footer a{color:var(--muted)}
 
 <section class="form-sec bg-grey" id="zayavka">
   <div class="wrap">
-    <h2>Узнайте цену на машину</h2>
-    <p class="sec-lead">2 минуты · Без SSN и документов</p>
+    <p class="eyebrow form-eyebrow">Заявка за 2 минуты</p>
+    <h2 class="form-title">Получите<br><span class="mark">бесплатный расчёт</span></h2>
+    <p class="sec-lead">Без SSN и документов</p>
     <div class="fcard">
       <form id="lead" novalidate autocomplete="on">
         <div id="formHead">
@@ -505,8 +544,9 @@ footer a{color:var(--muted)}
           <p class="fsub">Можно примерно, варианты уточним&nbsp;вместе</p>
 
           <div class="field" id="w_state">
-            <label for="f_state">Где будете покупать</label>
+            <label for="f_state">В каком штате вы живёте?</label>
             <select class="inp" id="f_state" name="state" required></select>
+            <p class="hint">Купить можно и в другом штате, если там выгоднее. Подскажем, как лучше.</p>
             <div class="err">Выберите штат</div>
           </div>
           <p class="note" id="notUsNote" hidden>Мы помогаем покупателям, которые находятся в США. Если вы скоро переезжаете, оставьте заявку, и я свяжусь с вами ближе к сроку.</p>
@@ -599,7 +639,7 @@ footer a{color:var(--muted)}
         <!-- STEP 3 -->
         <div class="fstep" data-step="3" hidden>
           <div class="ftitle">Куда вам позвонить?</div>
-          <p class="fsub">Я лично свяжусь с вами и уточню детали</p>
+          <p class="fsub">Я позвоню вам и уточню детали</p>
 
           <div class="field" id="w_name">
             <label for="f_name">Имя</label>
@@ -646,8 +686,9 @@ footer a{color:var(--muted)}
       <div class="done" id="done" hidden tabindex="-1">
         <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
         <div class="ftitle">Заявка у меня</div>
-        <p class="fsub" style="font-size:15.5px;color:var(--text)">Обычно я перезваниваю в течение часа, с 10:00 до 20:00. Уточню детали, и мы возьмём ваш запрос в работу.</p>
+        <p class="fsub" style="font-size:15.5px;color:var(--text)">Я свяжусь с вами в течение дня. Уточню детали, и мы возьмём ваш запрос в работу.</p>
         <div class="rid">Номер заявки: <b id="leadId"></b></div>
+        <a class="btn btn-ghost wa-done" id="waDone" target="_blank" rel="noopener" data-cta="done-whatsapp" hidden>Написать мне в WhatsApp</a>
         <div class="nx"><b>Уже есть предложение от дилера?</b><a href="#dogovor">Загрузите его на проверку</a>, это бесплатно.</div>
         <div class="nx"><b>Пока ждёте</b><a href="https://malinnikoff.github.io/guide/space-8.html" target="_blank" rel="noopener">Мой гайд «Как купить машину в США и не переплатить»</a></div>
       </div>
@@ -657,8 +698,8 @@ footer a{color:var(--muted)}
 
 <section id="dogovor">
   <div class="wrap">
-    <h2>Проверим ваш договор <span class="mark">бесплатно</span></h2>
-    <p class="sec-lead">Пришлите договор дилера – покажем по строкам, где вы переплачиваете.</p>
+    <h2 class="chk-title">Проверим договор<br>или предложение<span class="chk-free">бесплатно</span></h2>
+    <p class="sec-lead">Загрузите документ от&nbsp;дилера, и&nbsp;мы покажем по&nbsp;строкам, где вы переплачиваете и&nbsp;что можно убрать.</p>
 
     <div class="chk-case">
       <p class="chk-label">Пример: на чём дилер может заработать в договоре кредита на новую машину</p>
@@ -676,11 +717,11 @@ footer a{color:var(--muted)}
 
     <h3 class="chk-h">Когда присылать</h3>
     <div class="chk-when">
-      <div><b>До подписи</b><span>Можно изменить всё: цену машины, сборы, ставку, допы и срок кредита.</span></div>
-      <div><b>После подписи</b><span>Можно отменить расширенную гарантию и защиту шин и вернуть деньги за остаток срока.</span></div>
+      <div><b>До подписи</b><span>Можно обсудить цену машины, сборы, ставку, дополнительные услуги и срок кредита.</span></div>
+      <div><b>После подписи</b><span>Часто можно отменить навязанные дополнительные услуги и вернуть часть денег. Это зависит от штата и условий договора.</span></div>
     </div>
 
-    <button type="button" class="btn chk-open" id="chkOpen" aria-expanded="false" aria-controls="chkCard">Загрузить договор на проверку</button>
+    <button type="button" class="btn chk-open" id="chkOpen" aria-expanded="false" aria-controls="chkCard">Загрузить на проверку</button>
 
     <div class="fcard chk-card" id="chkCard" hidden>
       <form id="checkForm" novalidate>
@@ -744,21 +785,57 @@ footer a{color:var(--muted)}
   </div>
 </section>
 
+<section class="credit-sec bg-grey" id="kredit">
+  <div class="wrap">
+    <h2>Нужно улучшить кредитную историю?</h2>
+    <p class="credit-badge"><b>600+</b> клиентов</p>
+    <p class="sec-lead">Из-за плохой или короткой кредитной истории банк даёт высокую ставку или отказывает. Помогу разобраться, что можно исправить перед покупкой машины.</p>
+    <div class="fcard">
+      <form id="creditForm" novalidate>
+        <div class="field" id="k_name">
+          <label for="kf_name">Имя</label>
+          <input class="inp" id="kf_name" type="text" autocomplete="given-name" maxlength="60" placeholder="Как к вам обращаться">
+          <div class="err">Напишите имя</div>
+        </div>
+        <div class="field" id="k_phone">
+          <label for="kf_phone">Телефон</label>
+          <input class="inp phone-inp" id="kf_phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="22" placeholder="+1 (___) ___-____">
+          <div class="err">Проверьте номер: для США это 10 цифр</div>
+        </div>
+        <div class="field" id="k_consent">
+          <label class="consent"><input type="checkbox" id="kf_consent"><span>Согласен(на), что со мной свяжутся по этому номеру звонком или сообщением. <a href="privacy.html" target="_blank">Политика конфиденциальности</a></span></label>
+          <div class="err">Нужно ваше согласие, чтобы я мог позвонить</div>
+        </div>
+        <div class="hp" aria-hidden="true"><label>Не заполняйте <input type="text" id="kf_website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="alert" id="kSendError" role="alert" hidden><span>Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.</span><span id="kFallback"></span></div>
+        <div class="nav"><button type="submit" class="btn" id="kSubmit">Получить консультацию</button></div>
+      </form>
+      <div class="done" id="kDone" hidden tabindex="-1">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+        <div class="ftitle">Заявка у меня</div>
+        <p class="fsub" style="font-size:15.5px;color:var(--text)">Я свяжусь с вами в течение дня и расскажу, что можно сделать с вашей кредитной историей.</p>
+        <div class="rid">Номер заявки: <b id="kLeadId"></b></div>
+      </div>
+    </div>
+    <p class="credit-more">Подробнее о том, как я работаю с кредитной историей: <a href="https://boost-line.com/?utm_source=auto_site&amp;utm_medium=referral&amp;utm_campaign=credit_block" target="_blank" rel="noopener" data-cta="boostline">boost-line.com</a></p>
+  </div>
+</section>
+
 <section class="faq bg-blue" id="voprosy">
   <div class="wrap">
     <h2>Частые вопросы</h2>
-    <details><summary>Если вам платит дилер, вы на чьей стороне?</summary><p>Мы всегда на вашей стороне, в этом и заключается наша работа. Дилер платит нам вознаграждение за приведённого покупателя. Это фиксированная сумма: она не зависит ни от цены машины, ни от ставки, ни от допов. Поэтому нам невыгодно, чтобы вы переплатили.</p></details>
+    <details><summary>Если вам платит дилер, вы на чьей стороне?</summary><p>Мы на вашей стороне. Дилер платит нам за каждого приведённого покупателя, на стоимость машины для вас это не влияет. Наша задача – чтобы вы не переплатили.</p></details>
     <details><summary>Я ещё не выбрал модель. Можно оставить заявку?</summary><p>Да. Напишите, какой класс машины нужен и какой бюджет, и мы предложим варианты.</p></details>
-    <details><summary>У меня уже есть предложение или договор от дилера</summary><p>Загрузите его в блоке <a href="#dogovor">«Проверим ваш договор»</a>, закрыв личные данные. Мы бесплатно покажем, где вы переплачиваете и сколько можно сэкономить.</p></details>
-    <details><summary>Поможете с кредитом или лизингом?</summary><p>Да. Сравним условия финансирования у разных дилеров и банков, найдём самый выгодный вариант для вас и проверим, чтобы в договоре всё было корректно. Вы будете спокойны, что подписываете именно то, о чём договорились.</p></details>
-    <details><summary>У меня плохая кредитная история. Вы поможете?</summary><p>Да. Подберём дилеров и банки, которые работают с вашей кредитной историей. А если до покупки есть время, можем поднять ваш кредитный скор и улучшить кредитную историю: обычно на это уходит 30–60 дней. Я 3 года работаю с кредитными историями в США, и у меня есть для этого все ресурсы.</p></details>
+    <details><summary>У меня уже есть предложение или договор от дилера</summary><p>Загрузите его в блоке <a href="#dogovor">«Проверим договор или предложение»</a>, закрыв личные данные. Мы бесплатно покажем, где вы переплачиваете и сколько можно сэкономить.</p></details>
+    <details><summary>Поможете с кредитом или лизингом?</summary><p>Да. Сравним условия у разных дилеров и банков и проверим, чтобы в договоре было именно то, о чём договорились.</p></details>
+    <details><summary>У меня плохая кредитная история. Вы поможете?</summary><p>Да. Подберём дилеров и банки, которые работают с вашей кредитной историей. А если до покупки есть время, можем поднять ваш кредитный скор и улучшить кредитную историю: обычно на это уходит 30–60 дней. Оставьте заявку в блоке <a href="#kredit">«Кредитная история»</a>.</p></details>
     <details><summary>Можно купить без SSN или без кредитной истории?</summary><p>Да, это возможно: некоторые дилеры и марки работают с покупателями без SSN и без кредитной истории. Условия подбираем индивидуально, и в этом случае обязательно понадобится первый взнос.</p></details>
     <details><summary>Сколько времени занимает покупка?</summary><p>По-разному. Если нужная машина есть у дилера, а с кредитом и первым взносом всё в порядке, во Флориде сделку можно закрыть даже за один день. Если машину нужно найти или доставить в другой штат, понадобится больше времени. Точные сроки назовём, когда разберёмся в вашей ситуации.</p></details>
     <details><summary>Я не во Флориде. Вы поможете?</summary><p>Да, поможем. Чаще всего мы работаем с дилерами Флориды, но если вы живёте в другом штате, поможем оформить сделку дистанционно и отправим машину в ваш штат. Стоимость доставки назовём заранее.</p></details>
     <details><summary>Вы гарантируете самую низкую цену?</summary><p>Нет, честно это не может гарантировать никто. Наша задача – дать вам лучшие условия: мы торгуемся с дилерами за цену, вычитываем договор и убираем из него всё, за что вы не обязаны платить.</p></details>
-    <details><summary>А подержанные машины?</summary><p>Да, если это б/у от официального дилера марки, с заводской гарантией. Обычные подержанные машины и экспорт не оформляем.</p></details>
+    <details><summary>А подержанные машины?</summary><p>Да, помогаем и с новыми машинами, и с пробегом. Экспорт за пределы США не оформляем.</p></details>
     <details><summary>Заявка меня к чему-то обязывает?</summary><p>Нет. Решение о покупке всегда за вами.</p></details>
-    <a class="btn btn-ghost faq-cta" href="#zayavka" data-cta="faq">Оставить заявку</a>
+    <a class="btn btn-ghost faq-cta" href="#zayavka" data-cta="faq">Получить бесплатный расчёт</a>
   </div>
 </section>
 
@@ -779,7 +856,7 @@ var CONFIG = {
   // URL веб-приложения Google Apps Script (см. README, шаг 2). Пока пусто, заявки не отправляются, и форма честно показывает ошибку.
   ENDPOINT: "https://script.google.com/macros/s/AKfycbykgBfu6m0PEwuGR4mUwN0rAh_fYmL8Qo_EfOL5pfyWCzFZdu7vNMJRkPlI8c9G8I-p4g/exec",
   // Номер WhatsApp для запасного канала, только цифры с кодом страны, например "13055550000". Пусто — запасной канал через Instagram.
-  WHATSAPP: "",
+  WHATSAPP: "19544772740",
   INSTAGRAM: "dmitry_miami"
 };
 
@@ -909,7 +986,7 @@ var CONFIG = {
     document.getElementById("stepLabel").textContent = LABELS[step - 1];
     document.getElementById("barFill").style.width = (step / 3 * 100) + "%";
     backBtn.hidden = step === 1;
-    nextBtn.textContent = step === 3 ? "Отправить заявку" : "Дальше";
+    nextBtn.textContent = step === 3 ? "Получить расчёт" : "Дальше";
     document.getElementById("zayavka").scrollIntoView({ block: "start", behavior: "smooth" });
     track("form_step", { step: step });
   }
@@ -984,6 +1061,12 @@ var CONFIG = {
       if (!res || !res.ok || !res.id) throw new Error((res && res.error) || "bad response");
       track("lead_submit", { lead_id: res.id, when: p.when });
       document.getElementById("leadId").textContent = "#" + res.id;
+      var wa = document.getElementById("waDone");
+      if (CONFIG.WHATSAPP) {
+        var car = p.make && p.make !== "Пока не знаю" ? " на " + p.make + (p.model ? " " + p.model : "") : "";
+        wa.href = "https://wa.me/" + CONFIG.WHATSAPP + "?text=" + encodeURIComponent("Здравствуйте! Я оставил(а) заявку #" + res.id + car + ".");
+        wa.hidden = false;
+      }
       form.hidden = true;
       var done = document.getElementById("done");
       done.hidden = false;
@@ -994,7 +1077,7 @@ var CONFIG = {
       showError(p);
     }).then(function () {
       sending = false; nextBtn.disabled = false;
-      if (!form.hidden) nextBtn.textContent = "Отправить заявку";
+      if (!form.hidden) nextBtn.textContent = "Получить расчёт";
     });
   }
 
@@ -1133,6 +1216,48 @@ var CONFIG = {
       d.scrollIntoView({ block: "center", behavior: "smooth" }); d.focus({ preventScroll: true });
     }).catch(function (e) { if (!e || e.message !== "size") showErr(e); }).then(function () {
       cSending = false; btn.disabled = false; if (!cForm.hidden) btn.textContent = "Отправить на проверку";
+    });
+  });
+
+  /* ---- Кредитная история ---- */
+  var kForm = document.getElementById("creditForm"), kPhone = document.getElementById("kf_phone"), kSending = false;
+  kPhone.addEventListener("input", function () { formatPhone(kPhone); });
+  kForm.addEventListener("change", function (e) { var w = e.target.closest(".field"); if (w) w.classList.remove("invalid"); });
+  kForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (kSending) return;
+    var mark = function (id, bad) { document.getElementById(id).classList.toggle("invalid", bad); return !bad; };
+    var ok = mark("k_name", document.getElementById("kf_name").value.trim().length < 2);
+    ok = mark("k_phone", !phoneDigitsOf(kPhone)) && ok;
+    ok = mark("k_consent", !document.getElementById("kf_consent").checked) && ok;
+    if (!ok) return;
+    var err = document.getElementById("kSendError"), btn = document.getElementById("kSubmit");
+    err.hidden = true;
+    var fail = function () {
+      document.getElementById("kFallback").innerHTML = CONFIG.WHATSAPP
+        ? 'Или напишите мне в WhatsApp: <a target="_blank" rel="noopener" href="https://wa.me/' + CONFIG.WHATSAPP + "?text=" + encodeURIComponent("Здравствуйте! Хочу улучшить кредитную историю перед покупкой машины.") + '">открыть WhatsApp</a>'
+        : "";
+      err.hidden = false;
+    };
+    if (!CONFIG.ENDPOINT) { fail(); return; }
+    kSending = true; btn.disabled = true; btn.textContent = "Отправляю…";
+    fetch(CONFIG.ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        type: "credit", name: document.getElementById("kf_name").value.trim(), phone: phoneDigitsOf(kPhone), consent: true,
+        website: document.getElementById("kf_website").value,
+        utm_source: src.utm_source, utm_medium: src.utm_medium, utm_campaign: src.utm_campaign, utm_content: src.utm_content,
+        referrer: src.referrer
+      })
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (!res || !res.ok || !res.id) throw new Error("bad response");
+      track("credit_submit", { lead_id: res.id });
+      document.getElementById("kLeadId").textContent = "#" + res.id;
+      kForm.hidden = true; var d = document.getElementById("kDone"); d.hidden = false;
+      d.scrollIntoView({ block: "center", behavior: "smooth" }); d.focus({ preventScroll: true });
+    }).catch(fail).then(function () {
+      kSending = false; btn.disabled = false; if (!kForm.hidden) btn.textContent = "Получить консультацию";
     });
   });
 

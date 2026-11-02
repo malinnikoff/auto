@@ -289,7 +289,7 @@
       <header class="top">
         <p class="kicker" id="kickerText">Сервис покупки авто в США</p>
         <h1 id="pageTitle"><span class="h1-main">Покупка авто в США</span><span class="h1-accent">под ключ</span></h1>
-        <p class="sub" id="subText">Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.</p>
+        <p class="sub" id="subText">Заполните анкету, это пара минут. По ней мы подберём варианты и посчитаем итоговую сумму.</p>
         <div class="alt" id="altBlock">
           <h2>Клиент не может говорить?</h2>
           <p>Скопируйте готовый список вопросов и отправьте ему текстом в WhatsApp - он ответит письменно, а вы потом перенесёте ответы сюда.</p>
@@ -371,7 +371,7 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend class="lbl"><span class="num">13</span>Брал раньше машину в кредит или лизинг в США?</legend>
+              <legend class="lbl"><span class="num">13</span>Брали раньше машину в кредит или лизинг в США?</legend>
               <div class="seg">
                 <label><input type="radio" name="prior" id="prior_paid" value="paid" />Да, выплачена</label>
                 <label><input type="radio" name="prior" id="prior_paying" value="paying" />Да, ещё плачу</label>
@@ -452,7 +452,7 @@
             <input type="text" id="f_when" placeholder="Например, как можно скорее" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_wait"><span class="num">21</span>Готов ждать ради выгоды? <span class="opt">необязательно</span></label>
+            <label class="lbl" for="f_wait"><span class="num">21</span>Готовы ждать ради выгоды? <span class="opt">необязательно</span></label>
             <input type="text" id="f_wait" placeholder="Например, да, если будет дешевле" />
           </div>
           <div class="field">
@@ -531,7 +531,7 @@
         if (!isPro) {
           document.body.classList.add("client-mode");
           var subEl = document.getElementById("subText");
-          if (subEl) subEl.textContent = "Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.";
+          if (subEl) subEl.textContent = "Заполните анкету, это пара минут. По ней мы подберём варианты и посчитаем итоговую сумму.";
           var altEl = document.getElementById("altBlock");
           if (altEl) altEl.hidden = true;
           var histEl = document.getElementById("historySection");
