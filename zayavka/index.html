@@ -201,12 +201,13 @@
         cursor: pointer; text-align: center; text-decoration: none;
         display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       }
-      .btn-primary { background: var(--accent); color: var(--accent-ink); flex: 1 1 auto; }
+      .btn-primary { background: #16a34a; color: #ffffff; border-color: #16a34a; flex: 1 1 auto; }
       .btn-primary:active { filter: brightness(.92); }
-      .btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+      .btn-ghost { background: #e5e7eb; color: #1f2937; border-color: #d1d5db; }
+      .btn-ghost:active { filter: brightness(.96); }
       .btn-block { width: 100%; }
 
-      .btn-send { background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 58px; font-size: 18px; }
+      .btn-send { background: #16a34a; color: #ffffff; border-color: #16a34a; width: 100%; min-height: 58px; font-size: 18px; }
       .btn-send:disabled { opacity: .6; cursor: default; }
       .btn-send:active { filter: brightness(.92); }
       .send-error { margin: 10px 2px 0; font-size: 15.5px; line-height: 1.45; color: var(--danger); }
@@ -269,7 +270,7 @@
       .hitem .when { color: var(--ink-3); font-size: 14px; margin-top: 2px; }
       .hitem .row { display: flex; gap: 8px; margin-top: 12px; }
       .hitem button { min-height: 46px; padding: 10px 14px; font-size: 15.5px; flex: 1 1 0; }
-      .btn-del { background: var(--surface); color: var(--danger); border-color: var(--line); }
+      .btn-del { background: #e5e7eb; color: #1f2937; border-color: #d1d5db; }
 
       .toast {
         position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom));
@@ -476,7 +477,7 @@
         <h2>Готовая заявка</h2>
         <textarea id="resultText" readonly></textarea>
         <div class="row">
-          <button type="button" class="btn-primary" id="copyBtn">Скопировать заявку</button>
+          <button type="button" class="btn-ghost" id="copyBtn">Скопировать заявку</button>
         </div>
       </section>
 
