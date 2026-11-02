@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Покупка авто в США под ключ</title>
+    <style>
+      :root {
+        --bg: #eef0f2;
+        --surface: #ffffff;
+        --field: #f7f8f9;
+        --ink: #16191d;
+        --ink-2: #4c545e;
+        --ink-3: #7d8791;
+        --line: #d8dde2;
+        --accent: #c2410c;
+        --accent-ink: #ffffff;
+        --accent-soft: #fdf0e9;
+        --wa: #128c4a;
+        --tg: #229ED9;
+        --danger: #b3261e;
+        --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px -12px rgba(16, 24, 40, .18);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101214;
+          --surface: #1a1d20;
+          --field: #22262a;
+          --ink: #f2f4f6;
+          --ink-2: #b9c1c9;
+          --ink-3: #8b95a0;
+          --line: #33383e;
+          --accent: #f06423;
+          --accent-ink: #ffffff;
+          --accent-soft: #332016;
+          --wa: #1faa59;
+          --tg: #229ED9;
+          --danger: #e5736b;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 17px;
+        line-height: 1.45;
+      }
+      .wrap { max-width: 660px; margin: 0 auto; padding: 20px 14px 28px; }
+
+      header.top { padding: 6px 2px 4px; }
+      h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; }
+      .sub { margin: 0; color: var(--ink-2); font-size: 17px; }
+      .kicker { display: none; }
+
+      /* Client hero — premium centered composition */
+      body.client-mode header.top { padding: 52px 10px 10px; text-align: center; }
+      body.client-mode .kicker {
+        display: block;
+        margin: 0 0 22px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        line-height: 1.4;
+      }
+      body.client-mode h1 {
+        font-size: clamp(40px, 9.2vw, 60px);
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+        font-weight: 800;
+        margin: 0;
+        color: var(--ink);
+        text-wrap: balance;
+      }
+      body.client-mode h1 .h1-main { display: block; }
+      body.client-mode h1 .h1-accent {
+        display: block;
+        margin-top: 6px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-style: italic;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        color: var(--accent);
+      }
+      body.client-mode .sub {
+        max-width: 540px;
+        margin: 24px auto 0;
+        text-align: center;
+        color: var(--ink-2);
+        font-size: 17.5px;
+        line-height: 1.6;
+      }
+      body.client-mode form { margin-top: 30px; }
+      @media (max-width: 420px) {
+        body.client-mode header.top { padding-top: 40px; padding-left: 2px; padding-right: 2px; }
+        body.client-mode h1 { font-size: 34px; }
+        body.client-mode .sub { font-size: 17px; }
+      }
+
+      .alt {
+        margin-top: 16px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+        box-shadow: var(--shadow);
+      }
+      .alt h2 { font-size: 17px; margin: 0 0 4px; }
+      .alt p { margin: 0 0 12px; color: var(--ink-2); font-size: 15.5px; }
+      .alt button { width: 100%; }
+
+      form { margin-top: 18px; display: flex; flex-direction: column; gap: 14px; }
+      section.card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+      section.card > h2 {
+        font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+        color: var(--ink-3); margin: 0 0 14px;
+      }
+      .field { margin-bottom: 16px; }
+      .field:last-child { margin-bottom: 0; }
+      label.lbl, legend.lbl {
+        display: flex; align-items: baseline; gap: 8px;
+        font-size: 16.5px; font-weight: 600; margin-bottom: 8px; padding: 0;
+      }
+      .num {
+        flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+        width: 22px; height: 22px; border-radius: 50%;
+        background: var(--accent-soft); color: var(--accent);
+        font-size: 13px; font-weight: 700; transform: translateY(4px);
+      }
+      .opt { font-weight: 400; color: var(--ink-3); font-size: 14.5px; }
+      input[type="text"], input[type="tel"], textarea {
+        width: 100%;
+        font: inherit; font-size: 17px;
+        color: var(--ink);
+        background: var(--field);
+        border: 1.5px solid var(--line);
+        border-radius: 10px;
+        padding: 13px 14px;
+        appearance: none; -webkit-appearance: none;
+      }
+      textarea { min-height: 84px; resize: vertical; }
+      input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); background: var(--surface); }
+      fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+      fieldset:last-child { margin-bottom: 0; }
+
+      .seg { display: flex; flex-wrap: wrap; gap: 8px; }
+      .seg label {
+        display: inline-flex; align-items: center; gap: 9px;
+        padding: 12px 18px; min-height: 48px;
+        border: 1.5px solid var(--line); border-radius: 999px;
+        background: var(--field); font-size: 16.5px; font-weight: 600; cursor: pointer;
+        user-select: none; -webkit-user-select: none;
+      }
+      .seg input[type="radio"] {
+        width: 20px; height: 20px; flex: 0 0 auto; margin: 0;
+        accent-color: var(--accent); cursor: pointer;
+      }
+      .seg label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .seg label:has(input:checked) input[type="radio"] { accent-color: #ffffff; }
+      .seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .seg.grow label { flex: 1 1 0; justify-content: center; text-align: center; }
+
+      .cond {
+        background: var(--field);
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        padding: 14px;
+        margin-top: 4px;
+      }
+      .cond .field:last-child { margin-bottom: 0; }
+      .trade-note {
+        margin: 14px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink);
+        background: var(--accent-soft); border-radius: 10px; padding: 12px 14px;
+      }
+      [hidden] { display: none !important; }
+
+      .bar {
+        margin: 16px 0 0; padding: 4px 0 0;
+      }
+      .tg-note {
+        margin: 0 0 14px; font-size: 16.5px; line-height: 1.5; color: var(--ink);
+        background: var(--accent-soft); border-radius: 12px; padding: 13px 15px;
+      }
+      .checkline { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; font-size: 16px; font-weight: 600; }
+      .checkline input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); cursor: pointer; flex: 0 0 auto; }
+      input:disabled { opacity: .45; }
+      .bar .row { display: flex; flex-wrap: wrap; gap: 10px; max-width: 660px; margin: 0 auto; }
+      button, a.btn {
+        font: inherit; font-size: 17px; font-weight: 700;
+        border-radius: 12px; border: 1.5px solid transparent;
+        padding: 14px 18px; min-height: 54px;
+        cursor: pointer; text-align: center; text-decoration: none;
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      .btn-primary { background: var(--accent); color: var(--accent-ink); flex: 1 1 auto; }
+      .btn-primary:active { filter: brightness(.92); }
+      .btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+      .btn-wa { background: var(--wa); color: #fff; }
+      .btn-tg { background: var(--tg); color: #fff; flex: 1 1 auto; }
+      .btn-tg:active { filter: brightness(.92); }
+      .btn-block { width: 100%; }
+      .send-hint { margin: 12px 2px 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+
+      body.client-mode .bar .row { flex-direction: column; }
+      body.client-mode #waDirectBtn { width: 100%; min-height: 58px; font-size: 18px; }
+      body.client-mode #tgDirectBtn { width: 100%; min-height: 58px; font-size: 18px; }
+      body.client-mode #clearBtn { min-height: 44px; padding: 10px 14px; font-size: 15.5px; font-weight: 600; }
+
+      .panel {
+        margin-top: 18px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+      .panel h2 { font-size: 20px; margin: 0 0 10px; }
+      .panel textarea {
+        background: var(--field); font-size: 16.5px; line-height: 1.5;
+        min-height: 220px; width: 100%;
+      }
+      .panel .row { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+      @media (min-width: 520px) { .panel .row { flex-direction: row; } .panel .row > * { flex: 1 1 0; } }
+
+      .history { margin-top: 22px; }
+      .history h2 { font-size: 20px; margin: 0 2px 10px; }
+      .history .empty { color: var(--ink-2); margin: 0 2px; font-size: 16px; }
+      .hitem {
+        background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+        padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow);
+      }
+      .hitem .t { font-weight: 700; font-size: 17px; }
+      .hitem .m { color: var(--ink-2); font-size: 15.5px; margin-top: 2px; overflow-wrap: anywhere; }
+      .hitem .when { color: var(--ink-3); font-size: 14px; margin-top: 2px; }
+      .hitem .row { display: flex; gap: 8px; margin-top: 12px; }
+      .hitem button { min-height: 46px; padding: 10px 14px; font-size: 15.5px; flex: 1 1 0; }
+      .btn-del { background: var(--surface); color: var(--danger); border-color: var(--line); }
+
+      .toast {
+        position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom));
+        transform: translateX(-50%) translateY(16px);
+        background: var(--ink); color: var(--bg);
+        padding: 12px 20px; border-radius: 999px; font-size: 16px; font-weight: 600;
+        opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+        z-index: 20; max-width: 92vw; text-align: center;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <p class="kicker" id="kickerText">Сервис покупки авто в США</p>
+        <h1 id="pageTitle"><span class="h1-main">Покупка авто в США</span><span class="h1-accent">под ключ</span></h1>
+        <p class="sub" id="subText">Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.</p>
+        <div class="alt" id="altBlock">
+          <h2>Клиент не может говорить?</h2>
+          <p>Скопируйте готовый список вопросов и отправьте ему текстом в WhatsApp - он ответит письменно, а вы потом перенесёте ответы сюда.</p>
+          <button type="button" class="btn-ghost" id="copyQuestions">Скопировать вопросы для клиента</button>
+        </div>
+      </header>
+
+      <form id="form" novalidate>
+        <section class="card">
+          <h2 id="clientCardTitle">Клиент</h2>
+          <div class="field">
+            <label class="lbl" for="f_name"><span class="num">1</span><span id="lblNameText">Имя клиента</span></label>
+            <input type="text" id="f_name" autocomplete="name" placeholder="Например, Севара" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_phone"><span class="num">2</span><span id="lblPhoneText">Телефон</span> <span class="opt">необязательно</span></label>
+            <input type="tel" id="f_phone" autocomplete="tel" placeholder="+1 ..." />
+          </div>
+          <p class="tg-note">После заполнения мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой. Поэтому напишите ваш ник в Telegram - добавим вас в чат сразу, как начнём работу.</p>
+          <div class="field">
+            <label class="lbl" for="f_tg"><span class="num">3</span><span id="lblTgText">Ник в Telegram</span></label>
+            <input type="text" id="f_tg" autocomplete="off" placeholder="@username" />
+            <label class="checkline"><input type="checkbox" id="f_tg_none" />У меня нет Telegram</label>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Автомобиль</h2>
+          <fieldset>
+            <legend class="lbl"><span class="num">4</span>Машина уже выбрана точно?</legend>
+            <div class="seg grow">
+              <label><input type="radio" name="chosen" id="ch_yes" value="chosen" checked />Машина выбрана</label>
+              <label><input type="radio" name="chosen" id="ch_no" value="searching" />Ещё выбираем</label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label class="lbl" for="f_car"><span class="num">5</span>Машина: марка и модель</label>
+            <input type="text" id="f_car" placeholder="Например, Toyota RAV4" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_year"><span class="num">6</span>Год</label>
+            <input type="text" id="f_year" inputmode="numeric" placeholder="2026" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_trim"><span class="num">7</span>Комплектация</label>
+            <input type="text" id="f_trim" placeholder="Например, Limited" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_color"><span class="num">8</span>Цвет кузова</label>
+            <input type="text" id="f_color" placeholder="Например, чёрный" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_interior"><span class="num">9</span>Цвет салона <span class="opt">необязательно</span></label>
+            <input type="text" id="f_interior" placeholder="Например, светлый или красный" />
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Оплата</h2>
+          <fieldset>
+            <legend class="lbl"><span class="num">10</span>Способ покупки</legend>
+            <div class="seg grow">
+              <label><input type="radio" name="pay" id="pay_credit" value="credit" checked />Кредит</label>
+              <label><input type="radio" name="pay" id="pay_lease" value="lease" />Лизинг</label>
+              <label><input type="radio" name="pay" id="pay_cash" value="cash" />Наличные</label>
+            </div>
+          </fieldset>
+
+          <div id="creditBlock">
+            <div class="field">
+              <label class="lbl" for="f_score"><span class="num">11</span>Кредитный скор</label>
+              <input type="text" id="f_score" inputmode="numeric" placeholder="Например, 750" />
+            </div>
+            <fieldset>
+              <legend class="lbl"><span class="num">12</span>SSN есть?</legend>
+              <div class="seg grow">
+                <label><input type="radio" name="ssn" id="ssn_yes" value="yes" />Есть</label>
+                <label><input type="radio" name="ssn" id="ssn_no" value="no" />Нет</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="lbl"><span class="num">13</span>Брал раньше машину в кредит или лизинг в США?</legend>
+              <div class="seg">
+                <label><input type="radio" name="prior" id="prior_paid" value="paid" />Да, выплачена</label>
+                <label><input type="radio" name="prior" id="prior_paying" value="paying" />Да, ещё плачу</label>
+                <label><input type="radio" name="prior" id="prior_never" value="never" />Нет</label>
+              </div>
+            </fieldset>
+            <div class="field">
+              <label class="lbl" for="f_down"><span class="num">14</span>Первоначальный взнос, $</label>
+              <input type="text" id="f_down" inputmode="numeric" placeholder="Например, 10000" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Трейд-ин</h2>
+          <fieldset>
+            <legend class="lbl"><span class="num">15</span>Трейд-ин</legend>
+            <div class="seg grow">
+              <label><input type="radio" name="trade" id="trade_no" value="no" checked />Нет</label>
+              <label><input type="radio" name="trade" id="trade_yes" value="yes" />Есть</label>
+            </div>
+          </fieldset>
+          <div class="cond" id="tradeBlock" hidden>
+            <div class="field">
+              <label class="lbl" for="f_tcar">Какая машина (марка и модель)</label>
+              <input type="text" id="f_tcar" placeholder="Марка и модель" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="f_tyear">Год</label>
+              <input type="text" id="f_tyear" inputmode="numeric" placeholder="2022" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="f_tmiles">Пробег в милях</label>
+              <input type="text" id="f_tmiles" inputmode="numeric" placeholder="Например, 45000" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="f_tvin">VIN-номер</label>
+              <input type="text" id="f_tvin" autocomplete="off" placeholder="VIN-номер кузова" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="f_towed">Payoff - сколько осталось платить по кредиту, $</label>
+              <input type="text" id="f_towed" inputmode="numeric" placeholder="Если кредита за машину нет - напишите 0" />
+            </div>
+            <p class="trade-note">Эта информация нужна, чтобы мы оценили ваш автомобиль. И ещё: пришлите два фото машины снаружи сюда же в WhatsApp после отправки заявки - по фото и VIN мы дадим оценку.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Доставка и сроки</h2>
+          <div class="field">
+            <label class="lbl" for="f_state"><span class="num">16</span>Штат</label>
+            <input type="text" id="f_state" placeholder="Например, Pennsylvania" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_city"><span class="num">17</span>Город</label>
+            <input type="text" id="f_city" placeholder="Например, Pittsburgh" />
+          </div>
+          <fieldset>
+            <legend class="lbl"><span class="num">18</span>Доставка</legend>
+            <div class="seg grow">
+              <label><input type="radio" name="delivery" id="del_home" value="home" checked />Под дом</label>
+              <label><input type="radio" name="delivery" id="del_self" value="self" />Заберу сам</label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label class="lbl" for="f_when"><span class="num">19</span>Когда нужна машина</label>
+            <input type="text" id="f_when" placeholder="Например, как можно скорее" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_wait"><span class="num">20</span>Готов ждать ради выгоды? <span class="opt">необязательно</span></label>
+            <input type="text" id="f_wait" placeholder="Например, до конца ноября, если будет дешевле" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="f_notes"><span class="num">21</span>Заметки <span class="opt">необязательно</span></label>
+            <textarea id="f_notes" placeholder="Всё, что важно не потерять: пожелания, нюансы, договорённости"></textarea>
+          </div>
+        </section>
+      </form>
+
+      <div class="bar">
+        <div class="row">
+          <button type="button" class="btn-primary" id="buildBtn">Сформировать заявку</button>
+          <a class="btn btn-wa" id="waDirectBtn" href="#" target="_blank" rel="noopener" hidden>Отправить в WhatsApp</a>
+          <button type="button" class="btn-tg" id="tgDirectBtn">Отправить в Telegram</button>
+          <button type="button" class="btn-ghost" id="clearBtn">Очистить форму</button>
+        </div>
+        <p class="send-hint">Если отправите через Telegram - ваш ник мы увидим сразу из чата, вписывать его в форму не обязательно</p>
+      </div>
+
+      <section class="panel" id="resultPanel" hidden>
+        <h2>Готовая заявка</h2>
+        <textarea id="resultText" readonly></textarea>
+        <div class="row">
+          <button type="button" class="btn-primary" id="copyBtn">Скопировать заявку</button>
+          <a class="btn btn-wa" id="waBtn" href="#" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+          <button type="button" class="btn-tg" id="tgBtn">Отправить в Telegram</button>
+        </div>
+      </section>
+
+      <section class="history" id="historySection">
+        <h2>Последние заявки</h2>
+        <p class="empty" id="historyEmpty">Пока пусто. Сформированные заявки появятся здесь - можно вернуться и скопировать любую.</p>
+        <div id="historyList"></div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      (function () {
+        var DRAFT_KEY = "zayavka-draft-v1";
+        var HISTORY_KEY = "zayavka-history-v1";
+        var WA_NUMBER = "19544772740";
+
+        var form = document.getElementById("form");
+        var creditBlock = document.getElementById("creditBlock");
+        var tradeBlock = document.getElementById("tradeBlock");
+        var resultPanel = document.getElementById("resultPanel");
+        var resultText = document.getElementById("resultText");
+        var waBtn = document.getElementById("waBtn");
+        var waDirectBtn = document.getElementById("waDirectBtn");
+        var tgDirectBtn = document.getElementById("tgDirectBtn");
+        var tgBtn = document.getElementById("tgBtn");
+        var TG_URL = "https://t.me/dmtriy_miami";
+        var toast = document.getElementById("toast");
+
+        var isPro = false;
+        try { isPro = new URLSearchParams(window.location.search).get("pro") === "1"; } catch (e) {}
+
+        if (isPro) {
+          document.title = "Заявка на авто";
+          var proTitle = document.getElementById("pageTitle");
+          if (proTitle) proTitle.textContent = "Заявка на авто";
+          var proSub = document.getElementById("subText");
+          if (proSub) proSub.textContent = "Заполните по клиенту - заявка соберётся сама";
+        }
+
+        if (!isPro) {
+          document.body.classList.add("client-mode");
+          var subEl = document.getElementById("subText");
+          if (subEl) subEl.textContent = "Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.";
+          var altEl = document.getElementById("altBlock");
+          if (altEl) altEl.hidden = true;
+          var histEl = document.getElementById("historySection");
+          if (histEl) histEl.hidden = true;
+          var copyEl = document.getElementById("copyBtn");
+          if (copyEl) copyEl.hidden = true;
+          var nameLbl = document.getElementById("lblNameText");
+          if (nameLbl) nameLbl.textContent = "Ваше имя";
+          var phoneLbl = document.getElementById("lblPhoneText");
+          if (phoneLbl) phoneLbl.textContent = "Ваш телефон";
+          var tgLbl = document.getElementById("lblTgText");
+          if (tgLbl) tgLbl.textContent = "Ваш ник в Telegram";
+          var clientTitle = document.getElementById("clientCardTitle");
+          if (clientTitle) clientTitle.textContent = "О вас";
+          var buildEl = document.getElementById("buildBtn");
+          if (buildEl) buildEl.hidden = true;
+          if (waDirectBtn) waDirectBtn.hidden = false;
+        }
+
+        var TEXT_FIELDS = ["f_name","f_phone","f_tg","f_car","f_year","f_trim","f_color","f_interior","f_score","f_down",
+          "f_tcar","f_tyear","f_tmiles","f_tvin","f_towed","f_state","f_city","f_when","f_wait","f_notes"];
+        var RADIO_GROUPS = ["chosen","pay","ssn","prior","trade","delivery"];
+
+        function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; }
+        function radioVal(name) {
+          var el = form.querySelector('input[name="' + name + '"]:checked');
+          return el ? el.value : "";
+        }
+        function setRadio(name, value) {
+          var els = form.querySelectorAll('input[name="' + name + '"]');
+          for (var i = 0; i < els.length; i++) { els[i].checked = (els[i].value === value); }
+        }
+
+        var tgNoneBox = document.getElementById("f_tg_none");
+        function readState() {
+          var s = {};
+          TEXT_FIELDS.forEach(function (id) { s[id] = val(id); });
+          RADIO_GROUPS.forEach(function (n) { s[n] = radioVal(n); });
+          s.tg_none = tgNoneBox.checked;
+          return s;
+        }
+        function applyState(s) {
+          if (!s) return;
+          TEXT_FIELDS.forEach(function (id) { if (typeof s[id] === "string") document.getElementById(id).value = s[id]; });
+          RADIO_GROUPS.forEach(function (n) { if (s[n]) setRadio(n, s[n]); });
+          if (typeof s.tg_none === "boolean") tgNoneBox.checked = s.tg_none;
+        }
+
+        function updateVisibility() {
+          var pay = radioVal("pay");
+          creditBlock.hidden = !(pay === "credit" || pay === "lease");
+          tradeBlock.hidden = radioVal("trade") !== "yes";
+          document.getElementById("f_tg").disabled = tgNoneBox.checked;
+        }
+
+        function saveDraft() {
+          if (!isPro) return;
+          try { localStorage.setItem(DRAFT_KEY, JSON.stringify(readState())); } catch (e) {}
+        }
+        function loadDraft() {
+          if (!isPro) return;
+          try {
+            var raw = localStorage.getItem(DRAFT_KEY);
+            if (raw) applyState(JSON.parse(raw));
+          } catch (e) {}
+        }
+
+        var toastTimer = null;
+        function showToast(msg, duration) {
+          toast.textContent = msg;
+          toast.classList.add("show");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () { toast.classList.remove("show"); }, duration || 2200);
+        }
+
+        function copyText(text, okMsg, duration) {
+          function done() { showToast(okMsg, duration); }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+          } else { fallback(); }
+          function fallback() {
+            var ta = document.createElement("textarea");
+            ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); done(); } catch (e) { showToast("Не удалось скопировать - выделите текст вручную"); }
+            document.body.removeChild(ta);
+          }
+        }
+
+        function cleanMoney(x) { return x.replace(/^\$\s*/, "").replace(/^~\s*/, ""); }
+        function cleanMiles(x) { return x.replace(/\s*(миль|miles|mile|mi)\.?$/i, "").trim(); }
+
+        function buildText(s) {
+          var lines = [];
+          var title = (s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА") + (s.f_name ? " - " + s.f_name : "");
+          lines.push(title);
+
+          var clientParts = [];
+          if (s.f_name) clientParts.push(s.f_name);
+          if (s.f_city) clientParts.push(s.f_city);
+          if (s.f_state) clientParts.push(s.f_state);
+          if (clientParts.length) lines.push("Клиент: " + clientParts.join(", "));
+          if (s.f_phone) lines.push("Телефон: " + s.f_phone);
+          if (s.tg_none) lines.push("Telegram: нет");
+          else if (s.f_tg) lines.push("Telegram: " + (s.f_tg.charAt(0) === "@" ? s.f_tg : "@" + s.f_tg));
+
+          var carParts = [];
+          if (s.f_car) carParts.push(s.f_car);
+          if (s.f_year) carParts.push(s.f_year);
+          if (s.f_trim) carParts.push("комплектация " + s.f_trim);
+          if (s.f_color) carParts.push("цвет - " + s.f_color);
+          if (s.f_interior) carParts.push("салон - " + s.f_interior);
+          if (carParts.length) lines.push("Машина: " + carParts.join(", "));
+
+          var payLabel = s.pay === "lease" ? "в лизинг" : (s.pay === "cash" ? "за наличные" : "в кредит");
+          lines.push("Покупка: " + payLabel);
+
+          if (s.pay === "credit" || s.pay === "lease") {
+            if (s.f_score) {
+              var sc = "Кредитный скор: ~" + cleanMoney(s.f_score);
+              if (s.ssn) sc += ", SSN " + (s.ssn === "yes" ? "есть" : "нет");
+              lines.push(sc);
+            } else if (s.ssn) {
+              lines.push("SSN " + (s.ssn === "yes" ? "есть" : "нет"));
+            }
+            if (s.prior) {
+              var priorLabel = s.prior === "paid" ? "да, выплачена" : (s.prior === "paying" ? "да, ещё плачу" : "нет");
+              lines.push("Брал авто раньше: " + priorLabel);
+            }
+            if (s.f_down) lines.push("Первоначальный взнос: $" + cleanMoney(s.f_down));
+          }
+
+          if (s.trade === "yes") {
+            var tParts = [];
+            if (s.f_tcar) tParts.push(s.f_tcar);
+            if (s.f_tyear) tParts.push(s.f_tyear);
+            if (s.f_tmiles) tParts.push("пробег " + cleanMiles(s.f_tmiles) + " миль");
+            if (s.f_tvin) tParts.push("VIN " + s.f_tvin);
+            if (s.f_towed) tParts.push("payoff $" + cleanMoney(s.f_towed));
+            lines.push("Трейд-ин: " + (tParts.length ? tParts.join(", ") : "есть"));
+          } else {
+            lines.push("Трейд-ин: нет");
+          }
+
+          if (s.delivery === "self") lines.push("Доставка: самовывоз");
+          else if (s.f_city) lines.push("Доставка: под дом в " + s.f_city);
+          else lines.push("Доставка: под дом");
+
+          if (s.f_when) {
+            var сроки = "Сроки: " + s.f_when;
+            if (s.f_wait) сроки += ". Готов ждать - " + s.f_wait;
+            lines.push(сроки);
+          } else if (s.f_wait) {
+            lines.push("Готов ждать - " + s.f_wait);
+          }
+
+          if (s.f_notes) lines.push("Заметки: " + s.f_notes);
+
+          return lines.join("\n");
+        }
+
+        function loadHistory() {
+          try {
+            var raw = localStorage.getItem(HISTORY_KEY);
+            var arr = raw ? JSON.parse(raw) : [];
+            return Array.isArray(arr) ? arr : [];
+          } catch (e) { return []; }
+        }
+        function saveHistory(arr) {
+          try { localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(0, 30))); } catch (e) {}
+        }
+
+        function renderHistory() {
+          if (!isPro) return;
+          var list = document.getElementById("historyList");
+          var empty = document.getElementById("historyEmpty");
+          var arr = loadHistory();
+          list.innerHTML = "";
+          empty.hidden = arr.length > 0;
+          arr.forEach(function (item) {
+            var box = document.createElement("div");
+            box.className = "hitem";
+            var t = document.createElement("div");
+            t.className = "t";
+            t.textContent = item.title || "Заявка";
+            var m = document.createElement("div");
+            m.className = "m";
+            m.textContent = item.car || "";
+            var w = document.createElement("div");
+            w.className = "when";
+            var d = new Date(item.ts);
+            w.textContent = isNaN(d.getTime()) ? "" : d.toLocaleString("ru-RU", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+            var row = document.createElement("div");
+            row.className = "row";
+            var bCopy = document.createElement("button");
+            bCopy.type = "button"; bCopy.className = "btn-ghost"; bCopy.textContent = "Скопировать";
+            bCopy.addEventListener("click", function () { copyText(item.text, "Заявка скопирована"); });
+            var bDel = document.createElement("button");
+            bDel.type = "button"; bDel.className = "btn-del"; bDel.textContent = "Удалить";
+            bDel.addEventListener("click", function () {
+              var arr2 = loadHistory().filter(function (x) { return x.id !== item.id; });
+              saveHistory(arr2); renderHistory(); showToast("Заявка удалена");
+            });
+            row.appendChild(bCopy); row.appendChild(bDel);
+            box.appendChild(t);
+            if (item.car) box.appendChild(m);
+            box.appendChild(w); box.appendChild(row);
+            list.appendChild(box);
+          });
+        }
+
+        document.getElementById("buildBtn").addEventListener("click", function () {
+          var s = readState();
+          if (!s.f_name && !s.f_car) {
+            showToast("Заполните хотя бы имя клиента и машину");
+            document.getElementById("f_name").focus();
+            return;
+          }
+          var text = buildText(s);
+          resultText.value = text;
+          resultPanel.hidden = false;
+          waBtn.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text);
+          if (isPro) {
+            var carLine = [s.f_car, s.f_year].filter(Boolean).join(", ");
+            var arr = loadHistory();
+            arr.unshift({
+              id: Date.now(),
+              ts: Date.now(),
+              title: (s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА") + (s.f_name ? " - " + s.f_name : ""),
+              name: s.f_name, car: carLine, text: text
+            });
+            saveHistory(arr); renderHistory();
+          }
+          resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          showToast("Заявка сформирована");
+        });
+
+        waBtn.addEventListener("click", function (e) {
+          var s = readState();
+          if (!s.tg_none && !s.f_tg) {
+            e.preventDefault();
+            showToast("Укажите ник в Telegram или отметьте «У меня нет Telegram»");
+            var tgInput = document.getElementById("f_tg");
+            tgInput.scrollIntoView({ behavior: "smooth", block: "center" });
+            setTimeout(function () { tgInput.focus(); }, 350);
+          }
+        });
+
+        if (waDirectBtn) {
+          waDirectBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            var s = readState();
+            if (!s.f_name && !s.f_car) {
+              showToast("Заполните хотя бы ваше имя и машину");
+              var nameInput = document.getElementById("f_name");
+              nameInput.scrollIntoView({ behavior: "smooth", block: "center" });
+              setTimeout(function () { nameInput.focus(); }, 350);
+              return;
+            }
+            if (!s.tg_none && !s.f_tg) {
+              showToast("Укажите ник в Telegram или отметьте «У меня нет Telegram»");
+              var tgInput2 = document.getElementById("f_tg");
+              tgInput2.scrollIntoView({ behavior: "smooth", block: "center" });
+              setTimeout(function () { tgInput2.focus(); }, 350);
+              return;
+            }
+            var text = buildText(s);
+            window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text), "_blank");
+          });
+        }
+
+        function handleTelegramSend(prebuiltText) {
+          var s = readState();
+          if (!s.f_name && !s.f_car) {
+            showToast("Заполните хотя бы имя и машину");
+            var nameInput = document.getElementById("f_name");
+            nameInput.scrollIntoView({ behavior: "smooth", block: "center" });
+            setTimeout(function () { nameInput.focus(); }, 350);
+            return;
+          }
+          var text = prebuiltText || buildText(s);
+          copyText(text, "Заявка скопирована - вставьте её в чат в Telegram и отправьте", 4200);
+          window.open(TG_URL, "_blank");
+        }
+
+        if (tgDirectBtn) {
+          tgDirectBtn.addEventListener("click", function () { handleTelegramSend(null); });
+        }
+        if (tgBtn) {
+          tgBtn.addEventListener("click", function () {
+            handleTelegramSend(resultText.value ? resultText.value : null);
+          });
+        }
+
+        document.getElementById("copyBtn").addEventListener("click", function () {
+          copyText(resultText.value, "Заявка скопирована - можно вставлять в Telegram");
+        });
+
+        document.getElementById("clearBtn").addEventListener("click", function () {
+          form.reset();
+          setRadio("chosen", "chosen"); setRadio("pay", "credit"); setRadio("trade", "no"); setRadio("delivery", "home");
+          updateVisibility();
+          resultPanel.hidden = true;
+          resultText.value = "";
+          try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          showToast("Форма очищена");
+        });
+
+        var QUESTIONS = [
+          "Здравствуйте! Чтобы мы могли всё посчитать и понять, чем помочь, ответьте, пожалуйста, на несколько вопросов:",
+          "",
+          "1. Какая машина интересует: марка, модель, год, комплектация, цвет кузова и цвет салона (если важен)? Или вы ещё выбираете между вариантами?",
+          "2. Как планируете покупать: в кредит, в лизинг или за наличные?",
+          "3. Если в кредит или лизинг: какой у вас примерно кредитный скор? Есть ли SSN? Брали раньше машину в кредит или лизинг в США?",
+          "4. Сколько готовы внести как первоначальный взнос?",
+          "5. Есть ли машина, которую хотите отдать в зачёт (трейд-ин)? Если да - какая машина (марка и модель), год, пробег в милях, VIN-номер и payoff - сколько осталось платить по кредиту (если кредита за машину нет - напишите 0). Эта информация нужна, чтобы мы оценили ваш автомобиль. И ещё: пришлите два фото машины снаружи сюда же в WhatsApp - по фото и VIN мы дадим оценку.",
+          "6. В каком вы штате и городе? Нужна доставка под дом или заберёте сами?",
+          "7. К какой дате машина нужна? Готовы подождать, если ожидание даст цену или условия лучше?",
+          "8. Ваш ник в Telegram (например, @username). После ваших ответов мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой.",
+          "",
+          "Как ответите - сразу начнём работу и вернёмся с расчётом."
+        ].join("\n");
+        document.getElementById("copyQuestions").addEventListener("click", function () {
+          copyText(QUESTIONS, "Вопросы скопированы - вставьте в WhatsApp клиенту");
+        });
+
+        form.addEventListener("input", function () { updateVisibility(); saveDraft(); });
+        form.addEventListener("change", function () { updateVisibility(); saveDraft(); });
+
+        loadDraft();
+        updateVisibility();
+        renderHistory();
+      })();
+    </script>
+  </body>
+</html>
