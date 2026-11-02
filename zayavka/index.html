@@ -624,19 +624,24 @@
         function cleanMoney(x) { return x.replace(/^\$\s*/, "").replace(/^~\s*/, ""); }
         function cleanMiles(x) { return x.replace(/\s*(миль|miles|mile|mi)\.?$/i, "").trim(); }
 
-        function buildText(s) {
-          var lines = [];
-          var title = (s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА") + (s.f_name ? " - " + s.f_name : "");
-          lines.push(title);
+        function escHtml(x) {
+          return String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
 
-          var clientParts = [];
-          if (s.f_name) clientParts.push(s.f_name);
-          if (s.f_city) clientParts.push(s.f_city);
-          if (s.f_state) clientParts.push(s.f_state);
-          if (clientParts.length) lines.push("Клиент: " + clientParts.join(", "));
-          if (s.f_phone) lines.push("Телефон: " + s.f_phone);
-          if (s.tg_none) lines.push("Telegram: нет");
-          else if (s.f_tg) lines.push("Telegram: " + (s.f_tg.charAt(0) === "@" ? s.f_tg : "@" + s.f_tg));
+        function buildEntries(s) {
+          var heading = s.chosen === "searching" ? "Заявка на подбор авто" : "Заявка на покупку авто";
+          var entries = [];
+
+          if (s.f_name) entries.push({ label: "Клиент:", value: s.f_name });
+
+          var locParts = [];
+          if (s.f_state) locParts.push(s.f_state);
+          if (s.f_city) locParts.push(s.f_city);
+          if (locParts.length) entries.push({ label: "Штат и город:", value: locParts.join(", ") });
+
+          if (s.f_phone) entries.push({ label: "Телефон:", value: s.f_phone });
+          if (s.tg_none) entries.push({ label: "Telegram:", value: "нет" });
+          else if (s.f_tg) entries.push({ label: "Telegram:", value: (s.f_tg.charAt(0) === "@" ? s.f_tg : "@" + s.f_tg) });
 
           var carParts = [];
           if (s.f_car) carParts.push(s.f_car);
@@ -644,24 +649,30 @@
           if (s.f_trim) carParts.push("комплектация " + s.f_trim);
           if (s.f_color) carParts.push("цвет - " + s.f_color);
           if (s.f_interior) carParts.push("салон - " + s.f_interior);
-          if (carParts.length) lines.push("Машина: " + carParts.join(", "));
+          if (carParts.length) entries.push({ label: "Машина:", value: carParts.join(", ") });
 
           var payLabel = s.pay === "lease" ? "в лизинг" : (s.pay === "cash" ? "за наличные" : "в кредит");
-          lines.push("Покупка: " + payLabel);
+          entries.push({ label: "Покупка:", value: payLabel });
 
           if (s.pay === "credit" || s.pay === "lease") {
             if (s.f_score) {
-              var sc = "Кредитный скор: ~" + cleanMoney(s.f_score);
+              var sc = "~" + cleanMoney(s.f_score);
               if (s.ssn) sc += ", SSN " + (s.ssn === "yes" ? "есть" : "нет");
-              lines.push(sc);
+              entries.push({ label: "Кредитный скор:", value: sc });
             } else if (s.ssn) {
-              lines.push("SSN " + (s.ssn === "yes" ? "есть" : "нет"));
+              var ssnVal = s.ssn === "yes" ? "есть" : "нет";
+              entries.push({
+                label: "SSN:",
+                value: ssnVal,
+                plain: "SSN " + ssnVal,
+                tg: "<b>SSN:</b> " + escHtml(ssnVal)
+              });
             }
             if (s.prior) {
               var priorLabel = s.prior === "paid" ? "да, выплачена" : (s.prior === "paying" ? "да, ещё плачу" : "нет");
-              lines.push("Брал авто раньше: " + priorLabel);
+              entries.push({ label: "Брал авто раньше:", value: priorLabel });
             }
-            if (s.f_down) lines.push("Первоначальный взнос: $" + cleanMoney(s.f_down));
+            if (s.f_down) entries.push({ label: "Первоначальный взнос:", value: "$" + cleanMoney(s.f_down) });
           }
 
           if (s.trade === "yes") {
@@ -671,26 +682,48 @@
             if (s.f_tmiles) tParts.push("пробег " + cleanMiles(s.f_tmiles) + " миль");
             if (s.f_tvin) tParts.push("VIN " + s.f_tvin);
             if (s.f_towed) tParts.push("payoff $" + cleanMoney(s.f_towed));
-            lines.push("Трейд-ин: " + (tParts.length ? tParts.join(", ") : "есть"));
-            if (s.photoCount) lines.push("Фото: " + s.photoCount + " шт. (прикреплены к заявке)");
+            entries.push({ label: "Трейд-ин:", value: (tParts.length ? tParts.join(", ") : "есть") });
+            if (s.photoCount) entries.push({ label: "Фото:", value: s.photoCount + " шт. (прикреплены к заявке)" });
           } else {
-            lines.push("Трейд-ин: нет");
+            entries.push({ label: "Трейд-ин:", value: "нет" });
           }
 
-          if (s.delivery === "self") lines.push("Доставка: самовывоз");
-          else if (s.f_city) lines.push("Доставка: под дом в " + s.f_city);
-          else lines.push("Доставка: под дом");
+          var delValue = s.delivery === "self" ? "самовывоз" : (s.f_city ? "под дом в " + s.f_city : "под дом");
+          entries.push({ label: "Доставка:", value: delValue });
 
           if (s.f_when) {
-            var сроки = "Сроки: " + s.f_when;
+            var сроки = s.f_when;
             if (s.f_wait) сроки += ". Готов ждать - " + s.f_wait;
-            lines.push(сроки);
+            entries.push({ label: "Сроки:", value: сроки });
           } else if (s.f_wait) {
-            lines.push("Готов ждать - " + s.f_wait);
+            entries.push({
+              label: "",
+              value: s.f_wait,
+              plain: "Готов ждать - " + s.f_wait,
+              tg: "<b>Готов ждать</b> - " + escHtml(s.f_wait)
+            });
           }
 
-          if (s.f_notes) lines.push("Заметки: " + s.f_notes);
+          if (s.f_notes) entries.push({ label: "Заметки:", value: s.f_notes });
 
+          return { heading: heading, entries: entries };
+        }
+
+        function buildText(s) {
+          var built = buildEntries(s);
+          var lines = [built.heading];
+          built.entries.forEach(function (e) {
+            lines.push(e.plain || (e.label + " " + e.value));
+          });
+          return lines.join("\n");
+        }
+
+        function buildTextTg(s) {
+          var built = buildEntries(s);
+          var lines = ["<b>" + built.heading + "</b>"];
+          built.entries.forEach(function (e) {
+            lines.push(e.tg || ("<b>" + e.label + "</b> " + escHtml(e.value)));
+          });
           return lines.join("\n");
         }
 
@@ -844,6 +877,7 @@
               type: s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА",
               car: [s.f_car, s.f_year].filter(Boolean).join(", "),
               brief: brief,
+              briefTg: buildTextTg(s),
               photos: photos
             };
             return fetch(RECEIVER_URL, {
