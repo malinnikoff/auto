@@ -15,9 +15,9 @@
         --ink-2: #4c545e;
         --ink-3: #7d8791;
         --line: #d8dde2;
-        --accent: #16a34a;
+        --accent: #15803d;
         --accent-ink: #ffffff;
-        --accent-soft: #e7f6ec;
+        --accent-soft: #e8f5ec;
         --danger: #b3261e;
         --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px -12px rgba(16, 24, 40, .18);
       }
@@ -30,9 +30,9 @@
           --ink-2: #b9c1c9;
           --ink-3: #8b95a0;
           --line: #33383e;
-          --accent: #4ade80;
+          --accent: #2fa866;
           --accent-ink: #ffffff;
-          --accent-soft: #14301f;
+          --accent-soft: #1c2f24;
           --danger: #e5736b;
           --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
         }
@@ -289,7 +289,7 @@
       <header class="top">
         <p class="kicker" id="kickerText">Сервис покупки авто в США</p>
         <h1 id="pageTitle"><span class="h1-main">Покупка авто в США</span><span class="h1-accent">под ключ</span></h1>
-        <p class="sub" id="subText">Заполните анкету, это пара минут. По ней мы подберём варианты и посчитаем итоговую сумму.</p>
+        <p class="sub" id="subText">Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.</p>
         <div class="alt" id="altBlock">
           <h2>Клиент не может говорить?</h2>
           <p>Скопируйте готовый список вопросов и отправьте ему текстом в WhatsApp - он ответит письменно, а вы потом перенесёте ответы сюда.</p>
@@ -329,20 +329,33 @@
             <label class="lbl" for="f_car"><span class="num">5</span>Машина: марка и модель</label>
             <input type="text" id="f_car" placeholder="Например, Toyota RAV4" />
           </div>
+          <fieldset>
+            <legend class="lbl"><span class="num">6</span>Новая или с пробегом?</legend>
+            <div class="seg grow">
+              <label><input type="radio" name="condition" id="cond_new" value="new" checked />Новая</label>
+              <label><input type="radio" name="condition" id="cond_used" value="used" />С пробегом</label>
+            </div>
+          </fieldset>
+          <div class="cond" id="milesBlock" hidden>
+            <div class="field">
+              <label class="lbl" for="f_miles">Пробег - до скольких миль устроит</label>
+              <input type="text" id="f_miles" inputmode="numeric" placeholder="Например, до 60000" />
+            </div>
+          </div>
           <div class="field">
-            <label class="lbl" for="f_year"><span class="num">6</span>Год</label>
+            <label class="lbl" for="f_year"><span class="num">7</span>Год</label>
             <input type="text" id="f_year" inputmode="numeric" placeholder="2026" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_trim"><span class="num">7</span>Комплектация</label>
+            <label class="lbl" for="f_trim"><span class="num">8</span>Комплектация</label>
             <input type="text" id="f_trim" placeholder="Например, Limited" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_color"><span class="num">8</span>Цвет кузова</label>
+            <label class="lbl" for="f_color"><span class="num">9</span>Цвет кузова</label>
             <input type="text" id="f_color" placeholder="Например, чёрный" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_interior"><span class="num">9</span>Цвет салона <span class="opt">необязательно</span></label>
+            <label class="lbl" for="f_interior"><span class="num">10</span>Цвет салона <span class="opt">необязательно</span></label>
             <input type="text" id="f_interior" placeholder="Например, светлый или красный" />
           </div>
         </section>
@@ -350,7 +363,7 @@
         <section class="card">
           <h2>Оплата</h2>
           <fieldset>
-            <legend class="lbl"><span class="num">10</span>Способ покупки</legend>
+            <legend class="lbl"><span class="num">11</span>Способ покупки</legend>
             <div class="seg grow">
               <label><input type="radio" name="pay" id="pay_credit" value="credit" checked />Кредит</label>
               <label><input type="radio" name="pay" id="pay_lease" value="lease" />Лизинг</label>
@@ -360,18 +373,18 @@
 
           <div id="creditBlock">
             <div class="field">
-              <label class="lbl" for="f_score"><span class="num">11</span>Кредитный скор</label>
+              <label class="lbl" for="f_score"><span class="num">12</span>Кредитный скор</label>
               <input type="text" id="f_score" inputmode="numeric" placeholder="Например, 720" />
             </div>
             <fieldset>
-              <legend class="lbl"><span class="num">12</span>SSN есть?</legend>
+              <legend class="lbl"><span class="num">13</span>SSN есть?</legend>
               <div class="seg grow">
                 <label><input type="radio" name="ssn" id="ssn_yes" value="yes" />Есть</label>
                 <label><input type="radio" name="ssn" id="ssn_no" value="no" />Нет</label>
               </div>
             </fieldset>
             <fieldset>
-              <legend class="lbl"><span class="num">13</span>Брали раньше машину в кредит или лизинг в США?</legend>
+              <legend class="lbl"><span class="num">14</span>Брал раньше машину в кредит или лизинг в США?</legend>
               <div class="seg">
                 <label><input type="radio" name="prior" id="prior_paid" value="paid" />Да, выплачена</label>
                 <label><input type="radio" name="prior" id="prior_paying" value="paying" />Да, ещё плачу</label>
@@ -379,11 +392,11 @@
               </div>
             </fieldset>
             <div class="field">
-              <label class="lbl" for="f_down"><span class="num">14</span>Первоначальный взнос, $</label>
+              <label class="lbl" for="f_down"><span class="num">15</span>Первоначальный взнос, $</label>
               <input type="text" id="f_down" inputmode="numeric" placeholder="Например, 5000" />
             </div>
             <div class="field">
-              <label class="lbl" for="f_payment"><span class="num">15</span>Комфортный платёж в месяц, $</label>
+              <label class="lbl" for="f_payment"><span class="num">16</span>Комфортный платёж в месяц, $</label>
               <input type="text" id="f_payment" inputmode="numeric" placeholder="например, 700-800" />
             </div>
           </div>
@@ -392,7 +405,7 @@
         <section class="card">
           <h2>Трейд-ин</h2>
           <fieldset>
-            <legend class="lbl"><span class="num">16</span>Трейд-ин</legend>
+            <legend class="lbl"><span class="num">17</span>Трейд-ин</legend>
             <div class="seg grow">
               <label><input type="radio" name="trade" id="trade_no" value="no" checked />Нет</label>
               <label><input type="radio" name="trade" id="trade_yes" value="yes" />Есть</label>
@@ -433,30 +446,30 @@
         <section class="card">
           <h2>Доставка и сроки</h2>
           <div class="field">
-            <label class="lbl" for="f_state"><span class="num">17</span>Штат</label>
+            <label class="lbl" for="f_state"><span class="num">18</span>Штат</label>
             <input type="text" id="f_state" placeholder="Например, Florida" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_city"><span class="num">18</span>Город</label>
+            <label class="lbl" for="f_city"><span class="num">19</span>Город</label>
             <input type="text" id="f_city" placeholder="Например, Miami" />
           </div>
           <fieldset>
-            <legend class="lbl"><span class="num">19</span>Доставка</legend>
+            <legend class="lbl"><span class="num">20</span>Доставка</legend>
             <div class="seg grow">
               <label><input type="radio" name="delivery" id="del_home" value="home" checked />Под дом</label>
               <label><input type="radio" name="delivery" id="del_self" value="self" />Заберу сам</label>
             </div>
           </fieldset>
           <div class="field">
-            <label class="lbl" for="f_when"><span class="num">20</span>Когда нужна машина</label>
+            <label class="lbl" for="f_when"><span class="num">21</span>Когда нужна машина</label>
             <input type="text" id="f_when" placeholder="Например, как можно скорее" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_wait"><span class="num">21</span>Готовы ждать ради выгоды? <span class="opt">необязательно</span></label>
+            <label class="lbl" for="f_wait"><span class="num">22</span>Готов ждать ради выгоды? <span class="opt">необязательно</span></label>
             <input type="text" id="f_wait" placeholder="Например, да, если будет дешевле" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_notes"><span class="num">22</span>Заметки <span class="opt">необязательно</span></label>
+            <label class="lbl" for="f_notes"><span class="num">23</span>Заметки <span class="opt">необязательно</span></label>
             <textarea id="f_notes" placeholder="Всё, что важно не потерять: пожелания, нюансы, договорённости"></textarea>
           </div>
         </section>
@@ -502,6 +515,7 @@
         var form = document.getElementById("form");
         var creditBlock = document.getElementById("creditBlock");
         var tradeBlock = document.getElementById("tradeBlock");
+        var milesBlock = document.getElementById("milesBlock");
         var resultPanel = document.getElementById("resultPanel");
         var resultText = document.getElementById("resultText");
         var toast = document.getElementById("toast");
@@ -531,7 +545,7 @@
         if (!isPro) {
           document.body.classList.add("client-mode");
           var subEl = document.getElementById("subText");
-          if (subEl) subEl.textContent = "Заполните анкету, это пара минут. По ней мы подберём варианты и посчитаем итоговую сумму.";
+          if (subEl) subEl.textContent = "Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.";
           var altEl = document.getElementById("altBlock");
           if (altEl) altEl.hidden = true;
           var histEl = document.getElementById("historySection");
@@ -550,9 +564,9 @@
           if (buildEl) buildEl.hidden = true;
         }
 
-        var TEXT_FIELDS = ["f_name","f_phone","f_tg","f_car","f_year","f_trim","f_color","f_interior","f_score","f_down","f_payment",
+        var TEXT_FIELDS = ["f_name","f_phone","f_tg","f_car","f_miles","f_year","f_trim","f_color","f_interior","f_score","f_down","f_payment",
           "f_tcar","f_tyear","f_tmiles","f_tvin","f_towed","f_state","f_city","f_when","f_wait","f_notes"];
-        var RADIO_GROUPS = ["chosen","pay","ssn","prior","trade","delivery"];
+        var RADIO_GROUPS = ["chosen","condition","pay","ssn","prior","trade","delivery"];
 
         function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; }
         function radioVal(name) {
@@ -588,6 +602,7 @@
           var pay = radioVal("pay");
           creditBlock.hidden = !(pay === "credit" || pay === "lease");
           tradeBlock.hidden = radioVal("trade") !== "yes";
+          milesBlock.hidden = radioVal("condition") !== "used";
           document.getElementById("f_tg").disabled = tgNoneBox.checked;
           updatePhotoSoft();
         }
@@ -651,6 +666,14 @@
           var carParts = [];
           if (s.f_car) carParts.push(s.f_car);
           if (s.f_year) carParts.push(s.f_year);
+          if (s.f_car || s.f_year || s.condition === "used") {
+            if (s.condition === "used") {
+              carParts.push("с пробегом");
+              if (s.f_miles) carParts.push("пробег до " + cleanMiles(s.f_miles) + " миль");
+            } else {
+              carParts.push("новая");
+            }
+          }
           if (s.f_trim) carParts.push("комплектация " + s.f_trim);
           if (s.f_color) carParts.push("цвет - " + s.f_color);
           if (s.f_interior) carParts.push("салон - " + s.f_interior);
@@ -946,7 +969,7 @@
 
         document.getElementById("clearBtn").addEventListener("click", function () {
           form.reset();
-          setRadio("chosen", "chosen"); setRadio("pay", "credit"); setRadio("trade", "no"); setRadio("delivery", "home");
+          setRadio("chosen", "chosen"); setRadio("condition", "new"); setRadio("pay", "credit"); setRadio("trade", "no"); setRadio("delivery", "home");
           tradePhotos = [];
           renderPhotos();
           sendError.hidden = true;
@@ -963,7 +986,7 @@
         var QUESTIONS = [
           "Здравствуйте! Чтобы мы могли всё посчитать и понять, чем помочь, ответьте, пожалуйста, на несколько вопросов:",
           "",
-          "1. Какая машина интересует: марка, модель, год, комплектация, цвет кузова и цвет салона (если важен)? Или вы ещё выбираете между вариантами?",
+          "1. Какая машина интересует: марка, модель, год, комплектация, цвет кузова и цвет салона (если важен)? Новая или с пробегом? Если с пробегом - до какого пробега в милях подойдёт? Или вы ещё выбираете между вариантами?",
           "2. Как планируете покупать: в кредит, в лизинг или за наличные?",
           "3. Если в кредит или лизинг: какой у вас примерно кредитный скор? Есть ли SSN? Брали раньше машину в кредит или лизинг в США?",
           "4. Сколько готовы внести как первоначальный взнос?",
