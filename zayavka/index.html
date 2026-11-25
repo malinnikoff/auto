@@ -3,314 +3,178 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="data:," />
-    <title>Покупка авто в США под ключ</title>
+    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FFD600'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='700' font-size='30' text-anchor='middle' fill='%230A0A0A'%3EД%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+    <title>Заявка на покупку авто в США · dmitry_miami</title>
     <style>
       :root {
-        --bg: #eef0f2;
-        --surface: #ffffff;
-        --field: #f7f8f9;
-        --ink: #16191d;
-        --ink-2: #4c545e;
-        --ink-3: #7d8791;
-        --line: #d8dde2;
-        --accent: #15803d;
-        --accent-ink: #ffffff;
-        --accent-soft: #e8f5ec;
-        --danger: #b3261e;
-        --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px -12px rgba(16, 24, 40, .18);
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #101214;
-          --surface: #1a1d20;
-          --field: #22262a;
-          --ink: #f2f4f6;
-          --ink-2: #b9c1c9;
-          --ink-3: #8b95a0;
-          --line: #33383e;
-          --accent: #2fa866;
-          --accent-ink: #ffffff;
-          --accent-soft: #1c2f24;
-          --danger: #e5736b;
-          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
-        }
+        --bg: #F2F6FC; --surface: #FFFFFF; --field: #F7F7F7;
+        --ink: #0A0A0A; --ink-2: #3A4250; --ink-3: #5A6473; --soft: #888E98;
+        --line: #E8E8E8; --line-2: #DCE3EE;
+        --yellow: #FFD600; --yellow-hover: #F2C800; --yellow-soft: #FFF6BF;
+        --danger: #C62828; --danger-bg: #FDECEC;
+        --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        color-scheme: light;
       }
       * { box-sizing: border-box; }
       html { -webkit-text-size-adjust: 100%; }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        font-size: 17px;
-        line-height: 1.45;
-      }
-      .wrap { max-width: 660px; margin: 0 auto; padding: 20px 14px 28px; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+      [hidden] { display: none !important; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 
-      header.top { padding: 6px 2px 4px; }
-      h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; }
-      .sub { margin: 0; color: var(--ink-2); font-size: 17px; }
-      .kicker { display: none; }
+      /* topbar как на сайте */
+      .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(255,255,255,.96); -webkit-backdrop-filter: saturate(1.4) blur(10px); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--line); }
+      .topbar-in { max-width: 560px; margin: 0 auto; padding: 0 16px; height: 60px; display: flex; align-items: center; gap: 10px; }
+      .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex: 1; min-width: 0; }
+      .brand-name { font-weight: 700; font-size: 15px; white-space: nowrap; }
+      .ava { position: relative; width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex: none; background: linear-gradient(135deg,#C9D3E2,#8D9BB0); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 13px; }
+      .ava img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+      .to-site { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 11px; font-size: 14.5px; font-weight: 700; text-decoration: none; color: var(--ink); background: var(--surface); }
 
-      /* Client hero — premium centered composition */
-      body.client-mode header.top { padding: 52px 10px 10px; text-align: center; }
-      body.client-mode .kicker {
-        display: block;
-        margin: 0 0 22px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.26em;
-        text-transform: uppercase;
-        color: var(--ink-3);
-        line-height: 1.4;
-      }
-      body.client-mode h1 {
-        font-size: clamp(40px, 9.2vw, 60px);
-        line-height: 1.02;
-        letter-spacing: -0.035em;
-        font-weight: 800;
-        margin: 0;
-        color: var(--ink);
-        text-wrap: balance;
-      }
-      body.client-mode h1 .h1-main { display: block; }
-      body.client-mode h1 .h1-accent {
-        display: block;
-        margin-top: 6px;
-        font-family: Georgia, "Times New Roman", Times, serif;
-        font-style: italic;
-        font-weight: 500;
-        letter-spacing: -0.02em;
-        color: var(--accent);
-      }
-      body.client-mode .sub {
-        max-width: 540px;
-        margin: 24px auto 0;
-        text-align: center;
-        color: var(--ink-2);
-        font-size: 17.5px;
-        line-height: 1.6;
-      }
-      body.client-mode form { margin-top: 30px; }
-      @media (max-width: 420px) {
-        body.client-mode header.top { padding-top: 40px; padding-left: 2px; padding-right: 2px; }
-        body.client-mode h1 { font-size: 34px; }
-        body.client-mode .sub { font-size: 17px; }
-      }
+      .wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 40px; }
+      header.top { padding: 34px 0 6px; text-align: center; }
+      .kicker { display: inline-block; margin: 0 0 18px; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+      h1 { margin: 0; font-size: clamp(32px, 9.4vw, 44px); line-height: 1.08; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+      h1 .h1-main { display: block; }
+      h1 .h1-accent { display: inline; background: linear-gradient(transparent 58%, var(--yellow) 58%, var(--yellow) 92%, transparent 92%); padding: 0 2px; }
+      .sub { margin: 16px auto 0; max-width: 31em; color: var(--ink-2); font-size: 16px; line-height: 1.5; text-wrap: balance; }
+      .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 16px; }
+      .meta span { font-size: 13px; padding: 6px 11px; border-radius: 999px; background: var(--surface); color: var(--ink-2); border: 1px solid var(--line-2); }
+      .meta b { color: var(--ink); }
+      body:not(.client-mode) .meta { display: none; }
 
-      .alt {
-        margin-top: 16px;
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 14px 16px;
-        box-shadow: var(--shadow);
-      }
+      .alt { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; text-align: left; }
       .alt h2 { font-size: 17px; margin: 0 0 4px; }
-      .alt p { margin: 0 0 12px; color: var(--ink-2); font-size: 15.5px; }
+      .alt p { margin: 0 0 12px; color: var(--ink-2); font-size: 15px; }
       .alt button { width: 100%; }
 
-      form { margin-top: 18px; display: flex; flex-direction: column; gap: 14px; }
-      section.card {
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 16px;
-        box-shadow: var(--shadow);
-      }
-      section.card > h2 {
-        font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
-        color: var(--ink-3); margin: 0 0 14px;
-      }
-      .field { margin-bottom: 16px; }
+      form { margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+      section.card { background: var(--surface); border-radius: 20px; padding: 20px 18px; box-shadow: 0 1px 0 var(--line), 0 12px 30px -20px rgba(0,0,0,.25); }
+      section.card > h2 { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin: 0 0 18px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+      section.card > h2::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 1.5px var(--ink); flex: none; }
+      .field { margin-bottom: 18px; }
       .field:last-child { margin-bottom: 0; }
-      label.lbl, legend.lbl {
-        display: flex; align-items: baseline; gap: 8px;
-        font-size: 16.5px; font-weight: 600; margin-bottom: 8px; padding: 0;
-      }
-      .num {
-        flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
-        width: 22px; height: 22px; border-radius: 50%;
-        background: var(--accent-soft); color: var(--accent);
-        font-size: 13px; font-weight: 700; transform: translateY(4px);
-      }
-      .opt { font-weight: 400; color: var(--ink-3); font-size: 14.5px; }
-      input[type="text"], input[type="tel"], textarea {
-        width: 100%;
-        font: inherit; font-size: 17px;
-        color: var(--ink);
-        background: var(--field);
-        border: 1.5px solid var(--line);
-        border-radius: 10px;
-        padding: 13px 14px;
-        appearance: none; -webkit-appearance: none;
-      }
-      textarea { min-height: 84px; resize: vertical; }
-      input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); background: var(--surface); }
-      fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+      label.lbl, legend.lbl { display: flex; align-items: flex-start; gap: 9px; font-size: 15px; font-weight: 600; line-height: 1.35; margin-bottom: 8px; padding: 0; }
+      .num { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--yellow); color: var(--ink); font-size: 11.5px; font-weight: 800; margin-top: -1px; font-variant-numeric: tabular-nums; }
+      .opt { padding-top: 1px; white-space: nowrap; font-weight: 400; color: var(--soft); font-size: 13.5px; }
+      input[type="text"], input[type="tel"], textarea { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 13px 14px; min-height: 50px; appearance: none; -webkit-appearance: none; }
+      input::placeholder, textarea::placeholder { color: #A3A9B2; }
+      textarea { min-height: 96px; resize: vertical; }
+      input:focus, textarea:focus { outline: none; border-color: var(--ink); background: var(--surface); }
+      fieldset { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
       fieldset:last-child { margin-bottom: 0; }
 
       .seg { display: flex; flex-wrap: wrap; gap: 8px; }
-      .seg label {
-        display: inline-flex; align-items: center; gap: 9px;
-        padding: 12px 18px; min-height: 48px;
-        border: 1.5px solid var(--line); border-radius: 999px;
-        background: var(--field); font-size: 16.5px; font-weight: 600; cursor: pointer;
-        user-select: none; -webkit-user-select: none;
-      }
-      .seg input[type="radio"] {
-        width: 20px; height: 20px; flex: 0 0 auto; margin: 0;
-        accent-color: var(--accent); cursor: pointer;
-      }
-      .seg label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-      .seg label:has(input:checked) input[type="radio"] { accent-color: #ffffff; }
-      .seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
-      .seg.grow label { flex: 1 1 0; justify-content: center; text-align: center; }
+      .seg label { position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 10px 12px; min-height: 46px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-size: 14.5px; line-height: 1.25; font-weight: 500; cursor: pointer; user-select: none; -webkit-user-select: none; transition: background .12s, border-color .12s; }
+      .seg input[type="radio"] { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+      .seg label:has(input:checked) { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 600; }
+      .seg label:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 2px; }
+      .seg.grow label { flex: 1 1 0; text-align: center; white-space: nowrap; }
 
-      .cond {
-        background: var(--field);
-        border: 1px dashed var(--line);
-        border-radius: 12px;
-        padding: 14px;
-        margin-top: 4px;
-      }
+      .cond { background: var(--field); border: 1px dashed #C9CFD8; border-radius: 14px; padding: 14px; margin: -4px 0 18px; }
       .cond .field:last-child { margin-bottom: 0; }
-      .trade-note {
-        margin: 14px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink);
-        background: var(--accent-soft); border-radius: 10px; padding: 12px 14px;
-      }
-      [hidden] { display: none !important; }
-
-      .bar {
-        margin: 16px 0 0; padding: 4px 0 0;
-      }
-      .tg-note {
-        margin: 0 0 14px; font-size: 16.5px; line-height: 1.5; color: var(--ink);
-        background: var(--accent-soft); border-radius: 12px; padding: 13px 15px;
-      }
-      .checkline { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; font-size: 16px; font-weight: 600; }
-      .checkline input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); cursor: pointer; flex: 0 0 auto; }
+      .cond input[type="text"] { background: var(--surface); }
+      .trade-note, .tg-note { margin: 0 0 16px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); background: var(--yellow-soft); border-radius: 12px; padding: 12px 14px; }
+      .trade-note { margin-top: 14px; }
+      .checkline { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; font-size: 14.5px; font-weight: 500; color: var(--ink-2); }
+      .checkline input[type="checkbox"] { width: 20px; height: 20px; margin: 0; accent-color: var(--ink); cursor: pointer; flex: 0 0 auto; }
       input:disabled { opacity: .45; }
-      .bar .row { display: flex; flex-wrap: wrap; gap: 10px; max-width: 660px; margin: 0 auto; }
-      button, a.btn {
-        font: inherit; font-size: 17px; font-weight: 700;
-        border-radius: 12px; border: 1.5px solid transparent;
-        padding: 14px 18px; min-height: 54px;
-        cursor: pointer; text-align: center; text-decoration: none;
-        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      }
-      .btn-primary { background: #16a34a; color: #ffffff; border-color: #16a34a; flex: 1 1 auto; }
-      .btn-primary:active { filter: brightness(.92); }
-      .btn-ghost { background: #e5e7eb; color: #1f2937; border-color: #d1d5db; }
-      .btn-ghost:active { filter: brightness(.96); }
-      .btn-block { width: 100%; }
 
-      .btn-send { background: #16a34a; color: #ffffff; border-color: #16a34a; width: 100%; min-height: 58px; font-size: 18px; }
-      .btn-send:disabled { opacity: .6; cursor: default; }
-      .btn-send:active { filter: brightness(.92); }
-      .send-error { margin: 10px 2px 0; font-size: 15.5px; line-height: 1.45; color: var(--danger); }
-      .photo-soft { margin: 10px 2px 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
-      .send-success {
-        margin-top: 16px; background: #e7f6ee; border: 1px solid #9fd8b6; border-radius: 14px;
-        padding: 18px 16px; box-shadow: var(--shadow);
-      }
-      .send-success h2 { margin: 0 0 6px; font-size: 21px; color: #0d7a3e; }
-      .send-success p { margin: 0; font-size: 16.5px; line-height: 1.5; }
-      @media (prefers-color-scheme: dark) {
-        .send-success { background: #14301f; border-color: #2c5c40; }
-        .send-success h2 { color: #4cc38a; }
-      }
-      .trade-note + .field { margin-top: 14px; }
-      .photo-hint { margin: 0 0 10px; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
-      input[type="file"] {
-        width: 100%; font: inherit; font-size: 15.5px; color: var(--ink-2);
-        background: var(--surface); border: 1.5px dashed var(--line); border-radius: 10px; padding: 12px;
-      }
+      .bar { margin: 18px 0 0; }
+      .bar .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+      button, a.btn { font: inherit; font-size: 16px; font-weight: 700; border-radius: 14px; border: 1.5px solid transparent; padding: 12px 18px; min-height: 50px; cursor: pointer; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: var(--ink); }
+      .btn-primary { background: var(--yellow); flex: 1 1 auto; }
+      .btn-ghost { background: transparent; border-color: var(--ink); }
+      .btn-ghost:hover { background: var(--field); }
+      .btn-block { width: 100%; }
+      .btn-send { width: 100%; min-height: 58px; font-size: 17px; background: var(--yellow); box-shadow: 0 8px 20px -10px rgba(232,170,0,.9); transition: background .15s, transform .1s; }
+      .btn-send:hover { background: var(--yellow-hover); }
+      .btn-send:active { transform: scale(.99); }
+      .btn-send:disabled { opacity: .6; cursor: progress; }
+      .send-error { margin: 10px 0 0; font-size: 14.5px; line-height: 1.45; color: var(--danger); background: var(--danger-bg); border-radius: 12px; padding: 12px 14px; }
+      .photo-soft { margin: 10px 2px 0; font-size: 14px; line-height: 1.45; color: var(--ink-3); text-align: center; }
+      body.client-mode .bar .row { flex-direction: column; }
+      body.client-mode #clearBtn { min-height: 40px; border: 0; background: none; color: var(--ink-3); font-size: 14.5px; font-weight: 500; }
+      .privacy { margin: 12px 0 0; text-align: center; font-size: 13px; color: var(--soft); text-wrap: balance; }
+      .privacy a { color: var(--ink-3); }
+      body:not(.client-mode) .privacy { display: none; }
+
+      .send-success { margin-top: 18px; background: var(--surface); border-radius: 20px; padding: 24px 20px; box-shadow: 0 1px 0 var(--line), 0 12px 30px -20px rgba(0,0,0,.25); }
+      .send-success .ok { width: 60px; height: 60px; border-radius: 50%; background: var(--yellow); display: grid; place-items: center; margin-bottom: 16px; }
+      .send-success .ok svg { width: 30px; height: 30px; }
+      .send-success h2 { margin: 0 0 6px; font-size: 23px; font-weight: 800; letter-spacing: -.02em; }
+      .send-success p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-2); }
+      .send-success .nx { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 15px; }
+      .send-success .nx b { display: block; color: var(--ink); }
+      .send-success .nx a { color: var(--ink); font-weight: 600; text-underline-offset: 3px; }
+
+      .photo-hint { margin: 0 0 10px; font-size: 14px; line-height: 1.45; color: var(--ink-3); }
+      input[type="file"] { width: 100%; font: inherit; font-size: 14.5px; color: var(--ink-2); background: var(--surface); border: 1.5px dashed #C9CFD8; border-radius: 12px; padding: 12px; }
+      input[type="file"]::file-selector-button { font: inherit; font-weight: 700; border: 0; border-radius: 10px; background: var(--yellow); padding: 9px 14px; margin-right: 10px; cursor: pointer; }
       .photo-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
       .photo-grid:empty { margin-top: 0; }
-      .thumb { position: relative; width: 84px; height: 84px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); flex: 0 0 auto; }
+      .thumb { position: relative; width: 84px; height: 84px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); flex: 0 0 auto; }
       .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .thumb button {
-        position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; min-height: 0;
-        padding: 0; border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff;
-        font-size: 15px; line-height: 1; cursor: pointer;
-      }
-      .photo-count { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-3); }
+      .thumb button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; min-height: 0; padding: 0; border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff; font-size: 15px; line-height: 1; }
+      .photo-count { margin: 8px 0 0; font-size: 13.5px; color: var(--ink-3); }
 
-      body.client-mode .bar .row { flex-direction: column; }
-      body.client-mode #clearBtn { min-height: 44px; padding: 10px 14px; font-size: 15.5px; font-weight: 600; }
-
-      .panel {
-        margin-top: 18px;
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 16px;
-        box-shadow: var(--shadow);
-      }
-      .panel h2 { font-size: 20px; margin: 0 0 10px; }
-      .panel textarea {
-        background: var(--field); font-size: 16.5px; line-height: 1.5;
-        min-height: 220px; width: 100%;
-      }
+      .panel { margin-top: 18px; background: var(--surface); border-radius: 20px; padding: 18px; box-shadow: 0 1px 0 var(--line); }
+      .panel h2 { font-size: 19px; margin: 0 0 10px; }
+      .panel textarea { min-height: 220px; font-size: 15px; }
       .panel .row { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-      @media (min-width: 520px) { .panel .row { flex-direction: row; } .panel .row > * { flex: 1 1 0; } }
-
-      .history { margin-top: 22px; }
-      .history h2 { font-size: 20px; margin: 0 2px 10px; }
-      .history .empty { color: var(--ink-2); margin: 0 2px; font-size: 16px; }
-      .hitem {
-        background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-        padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow);
-      }
-      .hitem .t { font-weight: 700; font-size: 17px; }
-      .hitem .m { color: var(--ink-2); font-size: 15.5px; margin-top: 2px; overflow-wrap: anywhere; }
-      .hitem .when { color: var(--ink-3); font-size: 14px; margin-top: 2px; }
+      .history { margin-top: 24px; }
+      .history h2 { font-size: 19px; margin: 0 2px 10px; }
+      .history .empty { color: var(--ink-3); margin: 0 2px; font-size: 15px; }
+      .hitem { background: var(--surface); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 0 var(--line); }
+      .hitem .t { font-weight: 700; }
+      .hitem .m { color: var(--ink-2); font-size: 15px; margin-top: 2px; overflow-wrap: anywhere; }
+      .hitem .when { color: var(--soft); font-size: 13.5px; margin-top: 2px; }
       .hitem .row { display: flex; gap: 8px; margin-top: 12px; }
-      .hitem button { min-height: 46px; padding: 10px 14px; font-size: 15.5px; flex: 1 1 0; }
-      .btn-del { background: #e5e7eb; color: #1f2937; border-color: #d1d5db; }
+      .hitem button { min-height: 44px; padding: 8px 14px; font-size: 15px; flex: 1 1 0; }
+      .btn-del { background: var(--field); border-color: var(--line); }
 
-      .toast {
-        position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom));
-        transform: translateX(-50%) translateY(16px);
-        background: var(--ink); color: var(--bg);
-        padding: 12px 20px; border-radius: 999px; font-size: 16px; font-weight: 600;
-        opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
-        z-index: 20; max-width: 92vw; text-align: center;
-      }
+      .toast { position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(16px); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px; font-size: 15px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 40; max-width: 92vw; text-align: center; }
       .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
       @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+      @media (min-width: 900px) { .topbar-in, .wrap { max-width: 640px; } header.top { padding-top: 48px; } section.card { padding: 26px 26px; } }
     </style>
   </head>
-  <body>
+  <body class="client-mode">
+    <header class="topbar">
+      <div class="topbar-in">
+        <a class="brand" href="../" aria-label="На главную страницу">
+          <span class="ava" aria-hidden="true"><img src="../assets/dmitry.jpg" alt="" onerror="this.remove()">ДМ</span>
+          <span class="brand-name">dmitry_miami</span>
+        </a>
+        <a class="to-site" href="../">О нас</a>
+      </div>
+    </header>
     <div class="wrap">
       <header class="top">
-        <p class="kicker" id="kickerText">Сервис покупки авто в США</p>
-        <h1 id="pageTitle"><span class="h1-main">Покупка авто в США</span><span class="h1-accent">под ключ</span></h1>
-        <p class="sub" id="subText">Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.</p>
-        <div class="alt" id="altBlock">
-          <h2>Клиент не может говорить?</h2>
-          <p>Скопируйте готовый список вопросов и отправьте ему текстом в WhatsApp - он ответит письменно, а вы потом перенесёте ответы сюда.</p>
-          <button type="button" class="btn-ghost" id="copyQuestions">Скопировать вопросы для клиента</button>
-        </div>
+        <p class="kicker" id="kickerText">Покупка авто в&nbsp;США под&nbsp;ключ</p>
+        <h1 id="pageTitle"><span class="h1-main">Заявка на&nbsp;покупку</span><span class="h1-accent">автомобиля</span></h1>
+        <p class="sub" id="subText">Расскажите, какая машина нужна. Мы поторгуемся с&nbsp;дилерами, уберём лишние платежи из&nbsp;договора и&nbsp;скажем итоговую сумму со&nbsp;всеми налогами и&nbsp;сборами до&nbsp;покупки.</p>
+        <div class="meta"><span>Анкета за&nbsp;<b>5&nbsp;минут</b></span><span><b>Бесплатно</b></span><span>Знаете модель или ещё выбираете – подойдёт</span></div>
       </header>
 
       <form id="form" novalidate>
         <section class="card">
-          <h2 id="clientCardTitle">Клиент</h2>
+          <h2 id="clientCardTitle">О вас</h2>
           <div class="field">
-            <label class="lbl" for="f_name"><span class="num">1</span><span id="lblNameText">Имя клиента</span></label>
+            <label class="lbl" for="f_name"><span class="num">1</span><span id="lblNameText">Ваше имя</span></label>
             <input type="text" id="f_name" autocomplete="name" placeholder="Например, Анна" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_phone"><span class="num">2</span><span id="lblPhoneText">Телефон</span> <span class="opt">необязательно</span></label>
+            <label class="lbl" for="f_phone"><span class="num">2</span><span id="lblPhoneText">Ваш телефон</span> <span class="opt">необязательно</span></label>
             <input type="tel" id="f_phone" autocomplete="tel" placeholder="+1 ..." />
           </div>
-          <p class="tg-note">После заполнения мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой. Поэтому напишите ваш ник в Telegram - добавим вас в чат сразу, как начнём работу.</p>
+          <p class="tg-note">После заявки мы создадим чат в&nbsp;Telegram: там будет весь процесс – варианты машин, расчёты, документы и&nbsp;связь с&nbsp;командой. Напишите ваш ник, и&nbsp;мы добавим вас в&nbsp;чат, как только начнём работу.</p>
           <div class="field">
-            <label class="lbl" for="f_tg"><span class="num">3</span><span id="lblTgText">Ник в Telegram</span></label>
+            <label class="lbl" for="f_tg"><span class="num">3</span><span id="lblTgText">Ваш ник в Telegram</span></label>
             <input type="text" id="f_tg" autocomplete="off" placeholder="@username" />
             <label class="checkline"><input type="checkbox" id="f_tg_none" />У меня нет Telegram</label>
           </div>
@@ -338,7 +202,7 @@
           </fieldset>
           <div class="cond" id="milesBlock" hidden>
             <div class="field">
-              <label class="lbl" for="f_miles">Пробег - до скольких миль устроит</label>
+              <label class="lbl" for="f_miles">До какого пробега устроит, в&nbsp;милях</label>
               <input type="text" id="f_miles" inputmode="numeric" placeholder="Например, до 60000" />
             </div>
           </div>
@@ -384,7 +248,7 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend class="lbl"><span class="num">14</span>Брал раньше машину в кредит или лизинг в США?</legend>
+              <legend class="lbl"><span class="num">14</span>Брали раньше машину в&nbsp;кредит или лизинг в&nbsp;США?</legend>
               <div class="seg">
                 <label><input type="radio" name="prior" id="prior_paid" value="paid" />Да, выплачена</label>
                 <label><input type="radio" name="prior" id="prior_paying" value="paying" />Да, ещё плачу</label>
@@ -397,7 +261,7 @@
             </div>
             <div class="field">
               <label class="lbl" for="f_payment"><span class="num">16</span>Комфортный платёж в месяц, $</label>
-              <input type="text" id="f_payment" inputmode="numeric" placeholder="например, 700-800" />
+              <input type="text" id="f_payment" inputmode="numeric" placeholder="Например, 700–800" />
             </div>
           </div>
         </section>
@@ -429,13 +293,13 @@
               <input type="text" id="f_tvin" autocomplete="off" placeholder="VIN-номер кузова" />
             </div>
             <div class="field">
-              <label class="lbl" for="f_towed">Payoff - сколько осталось платить по кредиту, $</label>
-              <input type="text" id="f_towed" inputmode="numeric" placeholder="Если кредита за машину нет - напишите 0" />
+              <label class="lbl" for="f_towed">Payoff – сколько осталось платить по&nbsp;кредиту, $</label>
+              <input type="text" id="f_towed" inputmode="numeric" placeholder="Если кредита нет, напишите 0" />
             </div>
             <p class="trade-note">Эта информация нужна, чтобы оценить ваш автомобиль.</p>
             <div class="field">
               <label class="lbl" for="f_photos">Фото вашего автомобиля</label>
-              <p class="photo-hint">Прикрепите фото вашего автомобиля - минимум 3: два снаружи и одно внутри, где видно салон и сиденья. Чем больше фото, тем точнее оценим ваш автомобиль.</p>
+              <p class="photo-hint">Минимум 3&nbsp;фото: два снаружи и&nbsp;одно внутри, где видно салон и&nbsp;сиденья. Чем больше фото, тем точнее оценка.</p>
               <input type="file" id="f_photos" accept="image/*" multiple />
               <div class="photo-grid" id="photoGrid"></div>
               <p class="photo-count" id="photoCount" hidden></p>
@@ -457,7 +321,7 @@
             <legend class="lbl"><span class="num">20</span>Доставка</legend>
             <div class="seg grow">
               <label><input type="radio" name="delivery" id="del_home" value="home" checked />Под дом</label>
-              <label><input type="radio" name="delivery" id="del_self" value="self" />Заберу сам</label>
+              <label><input type="radio" name="delivery" id="del_self" value="self" />Заберу сам(а)</label>
             </div>
           </fieldset>
           <div class="field">
@@ -465,7 +329,7 @@
             <input type="text" id="f_when" placeholder="Например, как можно скорее" />
           </div>
           <div class="field">
-            <label class="lbl" for="f_wait"><span class="num">22</span>Готов ждать ради выгоды? <span class="opt">необязательно</span></label>
+            <label class="lbl" for="f_wait"><span class="num">22</span>Готовы подождать ради лучшей цены? <span class="opt">необязательно</span></label>
             <input type="text" id="f_wait" placeholder="Например, да, если будет дешевле" />
           </div>
           <div class="field">
@@ -478,31 +342,20 @@
       <div class="bar" id="sendBar">
         <button type="button" class="btn-send" id="sendBtn">Отправить заявку</button>
         <p class="send-error" id="sendError" hidden>Не получилось отправить. Проверьте интернет и попробуйте ещё раз.</p>
-        <p class="photo-soft" id="photoSoft" hidden>Вы выбрали трейд-ин, но не прикрепили фото. Заявку можно отправить и без них - но с фото мы оценим ваш автомобиль точнее.</p>
+        <p class="photo-soft" id="photoSoft" hidden>Вы выбрали трейд-ин, но не&nbsp;прикрепили фото. Заявку можно отправить и&nbsp;без них, но с&nbsp;фото мы оценим вашу машину точнее.</p>
+        <p class="privacy">Нажимая кнопку, вы соглашаетесь, что мы свяжемся с&nbsp;вами по&nbsp;заявке. <a href="../privacy.html">Политика конфиденциальности</a></p>
         <div class="row">
-          <button type="button" class="btn-primary" id="buildBtn">Сформировать заявку</button>
           <button type="button" class="btn-ghost" id="clearBtn">Очистить форму</button>
         </div>
       </div>
 
       <div class="send-success" id="sendSuccess" hidden>
+        <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
         <h2>Заявка отправлена!</h2>
-        <p>Мы получили вашу заявку. Дальше мы создадим чат в Telegram - там будет весь процесс подбора и покупки.</p>
+        <p>Я свяжусь с&nbsp;вами в&nbsp;течение дня. Дальше мы создадим чат в&nbsp;Telegram – там будет весь процесс подбора и&nbsp;покупки.</p>
+        <div class="nx"><b>Пока ждёте</b><a href="../shpargalka/">Шпаргалка «Как купить машину в&nbsp;США и&nbsp;не&nbsp;переплатить»</a></div>
       </div>
 
-      <section class="panel" id="resultPanel" hidden>
-        <h2>Готовая заявка</h2>
-        <textarea id="resultText" readonly></textarea>
-        <div class="row">
-          <button type="button" class="btn-ghost" id="copyBtn">Скопировать заявку</button>
-        </div>
-      </section>
-
-      <section class="history" id="historySection">
-        <h2>Последние заявки</h2>
-        <p class="empty" id="historyEmpty">Пока пусто. Сформированные заявки появятся здесь - можно вернуться и скопировать любую.</p>
-        <div id="historyList"></div>
-      </section>
     </div>
 
     <div class="toast" id="toast" role="status"></div>
@@ -516,8 +369,6 @@
         var creditBlock = document.getElementById("creditBlock");
         var tradeBlock = document.getElementById("tradeBlock");
         var milesBlock = document.getElementById("milesBlock");
-        var resultPanel = document.getElementById("resultPanel");
-        var resultText = document.getElementById("resultText");
         var toast = document.getElementById("toast");
         var RECEIVER_URL = "https://script.google.com/macros/s/AKfycbw1EFt_OfvsK_SObPlHlllWAy41W2kClOfg0XR5jOq-QBbyG050awcfL4AG2WMQ0Edy/exec";
         var MAX_PHOTOS = 10;
@@ -531,38 +382,18 @@
         var sendSuccess = document.getElementById("sendSuccess");
         var photoSoft = document.getElementById("photoSoft");
 
+        var SOURCE = "";
+        try {
+          var qp = new URLSearchParams(window.location.search);
+          var srcMap = { site: "сайт", shpargalka: "шпаргалка" };
+          var from = qp.get("src") || "";
+          var utm = qp.get("utm_source") || "";
+          try { if (!utm) utm = sessionStorage.getItem("utm_source") || ""; } catch (e) {}
+          if (from) SOURCE = srcMap[from] || from;
+          if (utm && utm !== from) SOURCE = SOURCE ? SOURCE + " (" + utm + ")" : utm;
+        } catch (e) {}
+
         var isPro = false;
-        try { isPro = new URLSearchParams(window.location.search).get("pro") === "1"; } catch (e) {}
-
-        if (isPro) {
-          document.title = "Заявка на авто";
-          var proTitle = document.getElementById("pageTitle");
-          if (proTitle) proTitle.textContent = "Заявка на авто";
-          var proSub = document.getElementById("subText");
-          if (proSub) proSub.textContent = "Заполните по клиенту - заявка соберётся сама";
-        }
-
-        if (!isPro) {
-          document.body.classList.add("client-mode");
-          var subEl = document.getElementById("subText");
-          if (subEl) subEl.textContent = "Вы выбираете машину - всё остальное делаем мы: подберём новую или с пробегом, поторгуемся с дилером о цене и уберём лишние платежи из договора, итоговую сумму со всеми налогами и сборами скажем заранее и бесплатно. Заполните форму - это пара минут.";
-          var altEl = document.getElementById("altBlock");
-          if (altEl) altEl.hidden = true;
-          var histEl = document.getElementById("historySection");
-          if (histEl) histEl.hidden = true;
-          var copyEl = document.getElementById("copyBtn");
-          if (copyEl) copyEl.hidden = true;
-          var nameLbl = document.getElementById("lblNameText");
-          if (nameLbl) nameLbl.textContent = "Ваше имя";
-          var phoneLbl = document.getElementById("lblPhoneText");
-          if (phoneLbl) phoneLbl.textContent = "Ваш телефон";
-          var tgLbl = document.getElementById("lblTgText");
-          if (tgLbl) tgLbl.textContent = "Ваш ник в Telegram";
-          var clientTitle = document.getElementById("clientCardTitle");
-          if (clientTitle) clientTitle.textContent = "О вас";
-          var buildEl = document.getElementById("buildBtn");
-          if (buildEl) buildEl.hidden = true;
-        }
 
         var TEXT_FIELDS = ["f_name","f_phone","f_tg","f_car","f_miles","f_year","f_trim","f_color","f_interior","f_score","f_down","f_payment",
           "f_tcar","f_tyear","f_tmiles","f_tvin","f_towed","f_state","f_city","f_when","f_wait","f_notes"];
@@ -734,6 +565,7 @@
           }
 
           if (s.f_notes) entries.push({ label: "Заметки:", value: s.f_notes });
+          if (SOURCE) entries.push({ label: "Откуда:", value: SOURCE });
 
           return { heading: heading, entries: entries };
         }
@@ -883,7 +715,7 @@
         sendBtn.addEventListener("click", function () {
           var s = readState();
           if (!s.f_name && !s.f_car) {
-            showToast(isPro ? "Заполните хотя бы имя клиента и машину" : "Заполните хотя бы ваше имя и машину");
+            showToast("Заполните хотя бы ваше имя и машину");
             focusField("f_name");
             return;
           }
@@ -938,35 +770,6 @@
           });
         });
 
-        document.getElementById("buildBtn").addEventListener("click", function () {
-          var s = readState();
-          if (!s.f_name && !s.f_car) {
-            showToast("Заполните хотя бы имя клиента и машину");
-            document.getElementById("f_name").focus();
-            return;
-          }
-          var text = buildText(s);
-          resultText.value = text;
-          resultPanel.hidden = false;
-          if (isPro) {
-            var carLine = [s.f_car, s.f_year].filter(Boolean).join(", ");
-            var arr = loadHistory();
-            arr.unshift({
-              id: Date.now(),
-              ts: Date.now(),
-              title: (s.chosen === "searching" ? "ПОДБОР" : "ПОКУПКА") + (s.f_name ? " - " + s.f_name : ""),
-              name: s.f_name, car: carLine, text: text
-            });
-            saveHistory(arr); renderHistory();
-          }
-          resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-          showToast("Заявка сформирована");
-        });
-
-        document.getElementById("copyBtn").addEventListener("click", function () {
-          copyText(resultText.value, "Заявка скопирована - можно вставлять в Telegram");
-        });
-
         document.getElementById("clearBtn").addEventListener("click", function () {
           form.reset();
           setRadio("chosen", "chosen"); setRadio("condition", "new"); setRadio("pay", "credit"); setRadio("trade", "no"); setRadio("delivery", "home");
@@ -976,30 +779,9 @@
           sendBtn.disabled = false;
           sendBtn.textContent = "Отправить заявку";
           updateVisibility();
-          resultPanel.hidden = true;
-          resultText.value = "";
           try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
           window.scrollTo({ top: 0, behavior: "smooth" });
           showToast("Форма очищена");
-        });
-
-        var QUESTIONS = [
-          "Здравствуйте! Чтобы мы могли всё посчитать и понять, чем помочь, ответьте, пожалуйста, на несколько вопросов:",
-          "",
-          "1. Какая машина интересует: марка, модель, год, комплектация, цвет кузова и цвет салона (если важен)? Новая или с пробегом? Если с пробегом - до какого пробега в милях подойдёт? Или вы ещё выбираете между вариантами?",
-          "2. Как планируете покупать: в кредит, в лизинг или за наличные?",
-          "3. Если в кредит или лизинг: какой у вас примерно кредитный скор? Есть ли SSN? Брали раньше машину в кредит или лизинг в США?",
-          "4. Сколько готовы внести как первоначальный взнос?",
-          "5. Какой платёж в месяц для вас комфортный? Например, 700-800 долларов.",
-          "6. Есть ли машина, которую хотите отдать в зачёт (трейд-ин)? Если да - какая машина (марка и модель), год, пробег в милях, VIN-номер и payoff - сколько осталось платить по кредиту (если кредита за машину нет - напишите 0). Эта информация нужна, чтобы мы оценили ваш автомобиль. Прикрепите фото вашего автомобиля прямо в форме - минимум 3: два снаружи и одно внутри, где видно салон.",
-          "7. В каком вы штате и городе? Нужна доставка под дом или заберёте сами?",
-          "8. К какой дате машина нужна? Готовы подождать, если ожидание даст цену или условия лучше?",
-          "9. Ваш ник в Telegram (например, @username). После ваших ответов мы создадим чат в Telegram: в нём будет весь процесс - варианты машин, расчёты, документы и связь с командой.",
-          "",
-          "В конце нажмите кнопку \"Отправить заявку\" - и заявка сразу придёт мне."
-        ].join("\n");
-        document.getElementById("copyQuestions").addEventListener("click", function () {
-          copyText(QUESTIONS, "Вопросы скопированы - вставьте в WhatsApp клиенту");
         });
 
         form.addEventListener("input", function () { updateVisibility(); saveDraft(); });
