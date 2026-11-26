@@ -71,7 +71,7 @@
       .seg { display: flex; flex-wrap: wrap; gap: 8px; }
       .seg label { position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 10px 12px; min-height: 46px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-size: 14.5px; line-height: 1.25; font-weight: 500; cursor: pointer; user-select: none; -webkit-user-select: none; transition: background .12s, border-color .12s; }
       .seg input[type="radio"] { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
-      .seg label:has(input:checked) { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 600; }
+      .seg label:has(input:checked) { background: var(--surface); border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); color: var(--ink); font-weight: 600; }
       .seg label:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 2px; }
       .seg.grow label { flex: 1 1 0; text-align: center; white-space: nowrap; }
 
@@ -183,7 +183,7 @@
         <p class="kicker" id="kickerText">Покупка авто в&nbsp;США под&nbsp;ключ</p>
         <h1 id="pageTitle"><span class="h1-main">Заявка на&nbsp;покупку</span><span class="h1-accent">автомобиля</span></h1>
         <p class="sub" id="subText">Расскажите, какая машина нужна. Мы подберём авто, поторгуемся с&nbsp;дилером и&nbsp;уберём лишние платежи из&nbsp;договора. Поможем с&nbsp;кредитом или лизингом и&nbsp;сопроводим всю покупку до&nbsp;получения ключей.</p>
-        <div class="meta"><span>Анкета за&nbsp;<b>5&nbsp;минут</b></span><span><b>Бесплатно</b></span><span>Знаете модель или ещё выбираете – подойдёт</span></div>
+        <div class="meta"><span>Анкета за&nbsp;<b>5&nbsp;минут</b></span><span><b>Бесплатно</b></span></div>
       </header>
 
       <form id="form" novalidate>
